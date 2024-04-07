@@ -1,0 +1,388 @@
+html{
+    font-size: 100%;
+}
+
+body{
+    display: flex;
+    flex-flow: column;
+    margin: 0;
+}
+
+a{
+    text-decoration: none;
+    color: #000000;
+}
+
+header{
+    margin: 5px 0;
+    width: 100%;
+}
+
+/*以下ヘッダーロゴ*/
+header .header{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 70px; 
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+header .header .title{
+    display: flex;
+    width: 100%;
+    min-width: 295px;
+    margin-left: 15px;
+}
+
+header .header .title a{
+    display: flex;
+    height: 100%;
+    width: fit-content;
+    align-items: center;
+}
+
+header .header .title a:hover{
+    opacity: 0.5;
+}
+
+header .header .title a span{
+    display: inline-block;
+    height: fit-content;
+    font-size: clamp(0.7em,1.7vw,1.15em);               
+    font-weight: bold;
+    min-width: 23vw;
+}
+
+header .header .title img{
+    width: max(15vw,75px);
+}
+
+header .header .title a:hover{
+    opacity: 0.7;
+}
+/*以下ヘッダーメニュー*/
+header .header .menu{
+    width: 100%;
+}
+
+
+header .header .menu .nav{
+    width: auto;
+    height: 100%;
+    margin-right: 15px;
+}
+
+header .header .menu .nav ul{
+    display: flex;
+    list-style: none;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-width: 590px;
+    height: 100%;
+}
+
+header .header .menu .nav ul li{
+    min-width: fit-content;
+    padding: 0 20px;
+}
+
+
+header .header .menu .nav ul li a{
+    position: relative;
+    font-size: 0.8em;
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+}
+
+header .header .menu .nav ul li a span{
+    color: red;
+    font-weight: bold;
+}
+
+header .header .menu .nav ul li a:not(a.app-login):after{
+    position: absolute;
+    content: "";
+    bottom: 0;
+    left: -5%;
+    /*形状*/
+    height: 2px;
+    width: 110%;
+    background-color: #00aaff;
+    transition: all 0.3s;
+    transform: scale(0,1);
+    transform-origin: center top;
+}
+
+header .header .menu .nav ul li a:not(a.app-login):hover::after{
+    transform: scale(1,1);
+}
+
+
+header .header .menu .nav ul li a.app-login{
+    padding: 20px 30px;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 20vw;
+    background-color: #ff9500;
+    border-bottom: 4px solid #00000045;
+    box-shadow: 2px 4px 6px #000000;
+}
+
+header .header .menu .nav ul li a.app-login:hover{
+    box-shadow: 1px 2px 3px #000000;
+    border-bottom: 2px solid #000000;
+}
+
+/*以下ハンバーガー*/
+
+header .header .hamburgur-menu{
+    display: none;
+    width: 100%;
+    font-size: 0.85em;
+    height: 50px;
+}
+
+header .header > .hamburgur-menu input#toggle{
+    display: none;
+}
+
+header .header > .hamburgur-menu label{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    width:  70px;
+    height: 100%;
+    z-index: 999;
+}
+
+header .header > .hamburgur-menu label span{
+    display: inline-block;
+    width: 35px;
+    height: 2px;
+    margin: 5px;
+    background-color: #000;
+    border-radius: 2px;
+    transition-duration: 0.5s;
+    transition-property: all;
+}
+
+
+/*ハンバーガーアニメーション*/
+header .header > .hamburgur-menu input#toggle:checked+
+label span:nth-of-type(2){
+    opacity: 0;
+}
+
+header .header > .hamburgur-menu input#toggle:checked+
+label span:nth-of-type(1){
+    transform: translateY(12px) rotate(-45deg);
+}
+
+header .header > .hamburgur-menu input#toggle:checked+
+label span:nth-of-type(3){
+    transform: translateY(-12px) rotate(45deg);
+}
+
+header .header > .hamburgur-menu input#toggle:checked+
+label{
+    justify-content: center;
+}
+
+/*以下アコーディオンメニュー*/
+header .header > .hamburgur-menu .nav{
+    display: block;
+    position: absolute;
+    width: 0;
+    top: 100%;
+    right: 0;
+    background-color: #ffffff;
+    z-index: 999;
+    transition-duration: 1s;
+}
+
+header .header > .hamburgur-menu input#toggle:checked~.nav{
+    width: 15em;
+}
+
+header .header .hamburgur-menu .nav > ul{
+    list-style: none;
+    min-width: fit-content;
+    white-space: nowrap;
+    padding: 0;
+    margin: 0;
+}
+
+header .header .hamburgur-menu .nav > ul li a{
+    display: block;
+    height: auto;
+    width: 100%;
+    padding: 1.1em;
+}
+
+header .header .hamburgur-menu .nav > ul > li > a{
+    background-color: #00000019;
+}
+
+header .header .hamburgur-menu .nav > ul > li > ul{
+    list-style: none;
+    padding: 0;
+}
+
+header .header .hamburgur-menu .nav > ul > li > ul li{
+    padding: 0 20px;
+}
+
+/*スマホ、小さめのタブレット*/
+.for-smart{
+    display: none;
+}
+
+@media screen and (max-width:900px) {
+    header{
+        position: fixed;
+        top: 0;
+        width: 100%;
+        margin: 0;
+    }
+    header .header{
+        height: fit-content;
+        min-height: -moz-fit-content;
+        min-height: fit-content;
+        box-shadow: 0px 1px 3px #0000004e;
+        position: relative; 
+    }
+    header .header div.menu ,
+    header div.menu-bar{
+        display: none;
+    }
+    header .header .title{
+        margin: 0;
+        min-width: auto;
+    }
+    /*スマホ用要素を表示*/
+    .for-smart{
+        display: block;
+    }
+    header .header > .hamburgur-menu{
+        display: flex;
+        align-items: center;
+        justify-content: right;
+    }
+}
+
+/*以下メニューバー*/
+header .menu-bar{
+    display: block;
+    width: 100%;
+    height: 40px;
+}
+
+header .menu-bar .menu-nav{
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+header .menu-bar .menu-nav > ul{
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 7px;
+    height: 100%;
+    width: 100%;
+    min-width: 900px;
+    background-color: #61caff;
+}
+
+header .menu-bar .menu-nav > ul > li{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+header .menu-bar .menu-nav > ul > li > a{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    width: 100%;
+    min-width: fit-content;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1em;
+}
+
+header .menu-bar .menu-nav > ul > li > a span{
+    font-size: 10px;
+}
+
+header .menu-bar .menu-nav > ul > li > a:hover{
+    opacity: 0.7;
+    background-color: #c1eaff;
+} 
+
+header .menu-bar .menu-nav > ul > li .accordion{
+    display: block;
+    position: absolute;
+    top: 100%;
+    height: 0;
+    width: 100%;
+    min-width: fit-content;
+    overflow: hidden;
+    border: #00aaff 1px solid;
+    opacity: 0;
+    transition-duration: 0.4s;
+    transition-property: height,opacity;
+}
+
+header .menu-bar .menu-nav > ul > li > .accordion > ul{
+    display: flex;
+    flex-flow: column;
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-width: max-content;
+}
+
+header .menu-bar .menu-nav > ul > li > .accordion > ul > li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9em;
+    height: 100%;
+    min-width: fit-content;
+}
+
+header .menu-bar .menu-nav > ul > li > .accordion > ul li a{
+    padding: 7px;
+}
+
+header .menu-bar .menu-nav > ul > li:hover
+div.accordion{
+    height: 300%;
+    opacity: 1;
+    box-shadow: 2px 3px 5px #00000068;
+}
+
+header .menu-bar .menu-nav > ul > li > div.accordion a:hover{
+    opacity: 0.7;
+    color: red;
+}
+
+/*ここからメイン*/
+main.contents{
+
+}
