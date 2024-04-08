@@ -16,6 +16,7 @@ a{
 header{
     margin: 5px 0;
     width: 100%;
+    
 }
 
 /*以下ヘッダーロゴ*/
@@ -26,6 +27,9 @@ header .header{
     height: 70px; 
     justify-content: space-between;
     align-items: center;
+    background: #ffffffff;
+    opacity: 1;
+    z-index: 999;
 }
 
 
@@ -253,6 +257,7 @@ header .header .hamburgur-menu .nav > ul > li > ul li{
     }
     header .header{
         height: fit-content;
+        height: -moz-fit-content;
         min-height: -moz-fit-content;
         min-height: fit-content;
         box-shadow: 0px 1px 3px #0000004e;

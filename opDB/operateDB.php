@@ -35,7 +35,7 @@ class OperateDB{
 
         protected $dsn,$user,$password;//接続用パラメータ
 
-        public array $colparams;//テーブルを作成する際に使う。(column)
+        public int $colparams;//テーブルを作成する際に使う。(column)
         public array $querys;//SQLクエリ    
         public $tablename; //SQL文実行で使うテーブル名
         
@@ -61,7 +61,7 @@ class OperateDB{
          *
          *  $colparams = ["id" => INT PRIMARY KEY AUTO_INCREMENT,"name" => VARCHAR(20)]
          */
-            public function __construct($dsn,$user,$password=NULL,$tablename,array $colparams=NULL) {
+            public function __construct($dsn,$user,$password,$tablename,array $colparams=NULL) {
             $this -> dsn = $dsn;
             $this -> user = $user;
             $this -> password = $password;

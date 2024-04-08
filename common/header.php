@@ -2,7 +2,7 @@
     <div class="header">
         <div class="title">
             <a href="/">
-                <img src="/Chofusai_app/common/image/header/chofusai_logo.svg" alt="潮風祭総合ポータルサイト">
+                <img src="/chofusai_app/common/image/header/chofusai_logo.svg" alt="潮風祭総合ポータルサイト">
                 <span>潮風祭総合ポータルサイト</span>
             </a>
         </div>
@@ -93,7 +93,7 @@
 <script type="text/javascript">
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = '/Chofusai_app/common/style/common.css';
+  css.href = '/chofusai_app/common/style/common.css';
   css.type = 'text/css';
   var head = document.getElementsByTagName('head')[0];
   head.appendChild(css);
