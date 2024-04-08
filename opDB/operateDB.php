@@ -35,7 +35,7 @@ class OperateDB{
 
         protected $dsn,$user,$password;//接続用パラメータ
 
-        public int $colparams;//テーブルを作成する際に使う。(column)
+        public array $colparams;//テーブルを作成する際に使う。(column)
         public array $querys;//SQLクエリ    
         public $tablename; //SQL文実行で使うテーブル名
         

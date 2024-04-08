@@ -1,8 +1,8 @@
 <header>
     <div class="header">
         <div class="title">
-            <a href="/">
-                <img src="/chofusai_app/common/image/header/chofusai_logo.svg" alt="潮風祭総合ポータルサイト">
+            <a href="/Chofusai_app">
+                <img src="/app/common/image/header/chofusai_logo.svg" alt="潮風祭総合ポータルサイト">
                 <span>潮風祭総合ポータルサイト</span>
             </a>
         </div>
@@ -87,13 +87,57 @@
         </nav>
     </div>
 </header>
+<!--サイドバー-->
 <section>
-    aaaaa
+    <div class="sidebar">
+        <nav>
+            <!--以下ディレクトリナビ表示のプログラム-->
+            <?php 
+                $place_name = ["app"=>"HOME","apply"=>"各種申請","user"=>"ユーザー","info"=>"ご案内","sponsor"=>"協賛のお申込み"];
+                $docroot = $_SERVER["DOCUMENT_ROOT"];
+                $dirs = str_replace($docroot,"",dirname($_SERVER["PHP_SELF"]));
+                $visited = explode("/",$dirs);
+                $visited = array_filter($visited);
+                $result = "";
+                foreach($visited as $dirname){
+                    if($dirname === reset($visited)){
+                        $result = "<a href="."/".$dirname.">".$place_name[$dirname]."</a>".htmlspecialchars(" > ");
+                    }
+                    elseif($dirname !== end($visited)){
+                        $result .= $place_name[$dirname].htmlspecialchars(" > ");
+                    }else{
+                        echo $result.$place_name[$dirname];
+                    }
+                }
+            ?>    
+            <div class="sidemenu">
+                <div class="nav">
+                    
+                </div>
+                <div class="adds">
+                    <a href="/Chofusai/apply/sponsor"><img src="/app/common/image/sidebar/ad_sponsor.jpg"><span>協賛のお願い</span></a>
+                    <a href="/Chofusai/apply/club"><img src="/app/common/image/sidebar/ad_club.jpeg"></a>
+                    <a href="/Chofusai/apply/market"><img src="/app/common/image/sidebar/ad_market.jpeg"></a>
+                </div>
+            </div>
+        </nav>
+    </div>
 </section>
+    <style>
+        section{
+            width: max(30vw,500px);
+        }
+        section div.sidebar{
+            margin-top: 15%;
+        }
+        section div.sidebar div.sidemenu{
+
+        }
+    </style>        
 <script type="text/javascript">
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = '/chofusai_app/common/style/common.css';
+  css.href = '/app/common/style/common.css';
   css.type = 'text/css';
   var head = document.getElementsByTagName('head')[0];
   head.appendChild(css);
