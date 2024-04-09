@@ -384,4 +384,31 @@ header .menu-bar .menu-nav > ul > li > div.accordion a:hover{
     color: red;
 }
 
-/*ここからメイン*/
+/*ここからサイドバー*/
+section{
+    width: max(20vw,200px);
+    font-size: max(0.45em,1.1vw);
+}
+section div.sidebar{
+    margin-top: 15%;
+}
+section div.sidebar div.sidemenu{
+    display: flex;
+    flex-flow: column;
+}
+section div.sidebar div.sidemenu div.adds{
+    display: flex;
+    flex-flow: column;
+}
+section div.sidebar div.sidemenu div.adds a{
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+section div.sidebar div.sidemenu div.adds a > img{
+    width: clamp(70px,10vw,100px);
+}
+
+article{
+    display: flex;
+}
