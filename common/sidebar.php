@@ -34,7 +34,8 @@
                         <a href="/contact/">お問い合わせ</a>
                     </div>
                     <div class="SNS">
-                        <a href='https://twitter.com/apuchofusai' target='_blank' rel='noreferrer noopener'><img src='/app/common/image/sidebar/logo-white.png'></a>
+                        <a href='https://twitter.com/apuchofusai' class="X" target='_blank' rel='noreferrer noopener'><img src='/app/common/image/sidebar/logo-white.png'></a>
+                        <a href="https://www.instagram.com/apuchofusai/" class="Insta" target="_blank" rel="noreferrer noopener"><img src="/app/common/image/sidebar/Instagram_Glyph_Gradient.png"></a>
                     </div>
                     <div class="toHP">
                         <a href="https://www.akita-pu.ac.jp/gakusei/chofusai/" target="_blank" rel="noreferrer noopener" title="新規タブを開きます">公式HPへ</a>

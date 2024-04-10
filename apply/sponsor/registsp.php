@@ -96,6 +96,7 @@
                     <?php endif; ?>     
                 </div>
             </main>
+            <?php require_once "sideads.php";?>
         </article>
     </body>
 </html>

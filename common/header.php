@@ -21,9 +21,9 @@
                 <div class="menu">
                     <nav class="nav">
                         <ul>
-                            <li><a href="/apply/sponser/registsp.php" class="app-regist-sponsor">協賛申請<span>Sponsor</span></a></li>
-                            <li><a href="/apply/club/registcb.php" class="app-regist-club">サークルイベント申請<span>Event&Booth</span></a></li>
-                            <li><a href="/apply/club/registmk.php" class="app-regist-market">フリーマーケット申請<span>Market</span></a></li>
+                            <li><a href="/app/apply/sponsor/registsp.php" class="app-regist-sponsor">協賛申請<span>Sponsor</span></a></li>
+                            <li><a href="/app/apply/club/registcb.php" class="app-regist-club">サークルイベント申請<span>Event&Booth</span></a></li>
+                            <li><a href="/app/apply/market/registmk.php" class="app-regist-market">フリーマーケット申請<span>Market</span></a></li>
                             <li>
                                 <a href="/user/login.php" class="app-login">ログイン</a>
                                 <?php if(isset($_SESSION["id"])):?><a class="logined" href="/user/mypage/">マイページへ</a><?php endif?>
