@@ -344,6 +344,7 @@ header .menu-bar .menu-nav > ul > li .accordion{
     overflow: hidden;
     border: #00aaff 1px solid;
     opacity: 0;
+    z-index: 999;
     background-color: #ffffff;
     transition-duration: 0.4s;
     transition-property: height,opacity;
@@ -387,15 +388,14 @@ header .menu-bar .menu-nav > ul > li > div.accordion a:hover{
 /*メインの複数カラム化*/
 article{
     display: flex;
+    justify-content: space-around;
 }
 /*ここからサイドバー*/
 section{
     position: sticky;
-    width: max(22em,200px);
-    font-size: max(0.7em,0.7vw);
+    width: max(20vw,250px);
 }
 section div.sidebar{
-    margin: 0 20px;
     margin-top: 15%;
 }
 section div.sidebar div.sidemenu{
@@ -404,13 +404,15 @@ section div.sidebar div.sidemenu{
 }
 section div.sidebar nav div.root{
     border: #00b2d1f5 1px solid;
-    padding: 5px 0;
+    padding: min(1vw,7px) 0;
     text-align: center;
+    font-size: max(0.7em,0.85vw);
 }
 section div.sidebar div.sidemenu div.nav{
     display: flex;
     flex-flow: column;
     margin-top: 10px;
+    font-size: max(0.85em,0.85vw);
 }
 section div.sidebar div.sidemenu div.nav > a{
     padding: 5px 0;
@@ -427,12 +429,15 @@ section div.sidebar div.sidemenu div.adds{
 section div.sidebar div.sidemenu div.adds a{
     display: flex;
     align-items: center;
-    padding: 5px 0;
+    padding: 5px 2px;
     border: red 1px dashed;
     margin-bottom: -1px;
+    font-size: max(0.6em,1.1vw);
+    box-shadow: inset 5px 5px #a3a3a3,inset -5px -5px #a3a3a3;
+    background-color: #ececec;
 }
 section div.sidebar div.sidemenu div.adds a > img{
-    width: clamp(70px,10vw,100px);
+    width: clamp(60px,7vw,70px);
 }
 section div.sidebar div.sidemenu div.toHP{
     margin-top: 15px;

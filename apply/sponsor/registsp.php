@@ -56,7 +56,7 @@
                         <!-- 郵便番号入力(7桁) -->
                         <p>郵便番号：<input type="text" name="zip" size="10" maxlength="7" onKeyUp="AjaxZip3.zip2addr(this,'','adress','adress');" placeholder="ハイフン無し" required value=''></p>
                         <!-- 住所入力(都道府県+以降の住所) -->
-                        <p>住所：<input type="text" name="adress" size="60" placeholder="郵便番号で自動入力されます" required value=''></p>
+                        <p>住所：<input type="text" name="adress" size="40" placeholder="郵便番号で自動入力されます" required value=''></p>
                         <p>番地・建物名：<input type="text" size="40" name="adressnum" placeholder="○○○-○○○ ××ビル△階" required value=''></p>
                         <p>金額：<input type="number" name="cash" required></p>
                         <p>受け渡し方法：
