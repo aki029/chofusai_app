@@ -61,7 +61,7 @@ class OperateDB{
          *
          *  $colparams = ["id" => INT PRIMARY KEY AUTO_INCREMENT,"name" => VARCHAR(20)]
          */
-            public function __construct($dsn,$user,$password,$tablename,array $colparams=NULL) {
+        public function __construct($dsn,$user,$password,$tablename,array $colparams=NULL) {
             $this -> dsn = $dsn;
             $this -> user = $user;
             $this -> password = $password;

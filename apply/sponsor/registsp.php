@@ -11,10 +11,10 @@
     $dbname = "chofusai";
     $user = "chofusai";
     $password = "m207t222";
-    $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8;";
+    $dsn = "mysql:host=db;dbname=$dbname;charset=utf8;";
     
     
-    isset($_SESSION["id"]) ? $id = $_SESSION["id"] : $id = str_pad(random_int(0,pow(10,10)-1),10,0,STR_PAD_LEFT);
+    isset($_SESSION["id"]) ? $id = $_SESSION["id"] : $id = str_pad(random_int(0,pow(10,9)-1),10,0,STR_PAD_LEFT);
 
     require_once "operateDB.php";//DB操作オブジェクト生成用ファイル
 
@@ -31,7 +31,7 @@
         
         $sponsor = unserialize($_SESSION["Data"]);
         unset($_SESSION["Data"]);
-        
+        var_dump($sponsor);
         $opdb -> registDB($sponsor);
     }
 ?>
@@ -96,7 +96,6 @@
                     <?php endif; ?>     
                 </div>
             </main>
-            <?php require_once "sideads.php";?>
         </article>
     </body>
 </html>

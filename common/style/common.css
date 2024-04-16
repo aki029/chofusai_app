@@ -388,12 +388,13 @@ header .menu-bar .menu-nav > ul > li > div.accordion a:hover{
 /*メインの複数カラム化*/
 article{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
 }
 /*ここからサイドバー*/
 section{
     position: sticky;
-    width: max(20vw,250px);
+    width: max(16vw,250px);
+    margin-right: 25px;
 }
 section div.sidebar{
     margin-top: 15%;
@@ -454,4 +455,3 @@ section div.sidebar div.sidemenu div.toHP{
 section div.sidebar div.sidemenu div.toHP a{
     display: block;
 }
-
