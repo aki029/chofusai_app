@@ -19,7 +19,7 @@
                             </ul>
                         </li> 
                         <li>
-                            <p>潮風祭開催情報</p>
+                            <p>潮風祭開催情報aaa</p>
                             <ul>
                                 <li><a href="/app/info/"><?=date("Y")?>年度概要</a></li>
                                 <li><a href="/app/info/sponsor/">協賛会社様一覧</a></li>
