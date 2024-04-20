@@ -97,5 +97,4 @@
                 </div>
             </main>
         </article>
-    </body>
-</html>
+    <?php include_once 'footer.php'?>
