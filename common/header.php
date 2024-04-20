@@ -13,7 +13,7 @@
         <header>
             <div class="header">
                 <div class="title">
-                    <a href="/Chofusai_app">
+                    <a href="/app/">
                         <img src="/app/common/image/header/chofusai_logo.svg" alt="潮風祭総合ポータルサイト">
                         <span>潮風祭総合ポータルサイト</span>
                     </a>
@@ -25,7 +25,7 @@
                             <li><a href="/app/apply/club/registcb.php" class="app-regist-club">サークルイベント申請<span>Event&Booth</span></a></li>
                             <li><a href="/app/apply/market/registmk.php" class="app-regist-market">フリーマーケット申請<span>Market</span></a></li>
                             <li>
-                                <a href="/user/login.php" class="app-login">ログイン</a>
+                                <a href="/app/user/login.php" class="app-login">ログイン</a>
                                 <?php if(isset($_SESSION["id"])):?><a class="logined" href="/user/mypage/">マイページへ</a><?php endif?>
                             </li>
                         </ul>
@@ -42,27 +42,27 @@
                     <nav class="nav">
                         <ul>
                             <li>
-                                <a href="/">HOME</a>
+                                <a href="/app/">HOME</a>
                             </li>
                             <li>
-                                <a href="/info/">開催情報</a>
+                                <a href="/app/info/">開催情報</a>
                                 <ul>
-                                    <li><a href="/info/event/">イベント</a></li>
-                                    <li><a href="/info/booth/">模擬店</a></li>
-                                    <li><a href="/info/market/">フリーマーケット</a></li>
-                                    <li><a href="/info/sponsor/">協賛会社様一覧</a></li>
+                                    <li><a href="/app/info/event/">イベント</a></li>
+                                    <li><a href="/app/info/booth/">模擬店</a></li>
+                                    <li><a href="/app/info/market/">フリーマーケット</a></li>
+                                    <li><a href="/app/info/sponsor/">協賛会社様一覧</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="/apply/">各種申請</a>
+                                <a href="/app/apply/">各種申請</a>
                                 <ul>
-                                    <li><a href="/apply/sponser/registsp.php">協賛</a></li>
-                                    <li><a href="/apply/club/">イベント・模擬店</a></li>
-                                    <li><a href="/apply/market/">フリーマーケット</a></li>
+                                    <li><a href="/app/apply/sponser/registsp.php">協賛</a></li>
+                                    <li><a href="/app/apply/club/">イベント・模擬店</a></li>
+                                    <li><a href="/app/apply/market/">フリーマーケット</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="/user/">ログイン</a>
+                                <a href="/app/user/">ログイン</a>
                             </li>
                         </ul>
                     </nav>
@@ -74,27 +74,27 @@
                     <ul>
                         <li><a href="/">HOME</a></li>
                         <li>
-                            <a href="/info/">開催情報</a>
+                            <a href="/app/info/">開催情報</a>
                             <div class="accordion">
                                 <ul>
-                                    <li><a href="/info/club/">イベント・模擬店</a></li>
-                                    <li><a href="/info/market/">フリーマーケット</a></li>
-                                    <li><a href="/info/sponser/">協賛会社様一覧</a></li>
+                                    <li><a href="/app/info/club/">イベント・模擬店</a></li>
+                                    <li><a href="/app/info/market/">フリーマーケット</a></li>
+                                    <li><a href="/app/info/sponser/">協賛会社様一覧</a></li>
                                 </ul>
                             </div>
                         </li>
                         <li>
-                            <a href="/apply/">各種申請</a>
+                            <a href="/app/apply/">各種申請</a>
                             <div class="accordion">
                                 <ul>
-                                    <li><a href="/apply/sponser/">協賛のお申込み</a></li>
-                                    <li><a href="/apply/club/">模擬店・イベントお申込み</a></li>
-                                    <li><a href="/apply/market/">フリーマーケットのお申込み</a></li>
+                                    <li><a href="/app/apply/sponsor/">協賛のお申込み</a></li>
+                                    <li><a href="/app/apply/club/">模擬店・イベントお申込み</a></li>
+                                    <li><a href="/app/apply/market/">フリーマーケットのお申込み</a></li>
                                 </ul>
                             </div>
                         </li>
                         <li><a href="https://www.akita-pu.ac.jp/gakusei/chofusai/" target="_blank" rel="noreferrer noopener" title="新規タブを開きます">公式HPへ<span>※新規タブを開きます</span></a></li>
-                        <li><a href="/contact/">お問い合わせ</a></li>
+                        <li><a href="/app/contact/">お問い合わせ</a></li>
                     </ul>
                 </nav>
             </div>

@@ -205,6 +205,7 @@ header .header > .hamburgur-menu .nav{
     background-color: #ffffff;
     z-index: 999;
     transition-duration: 1s;
+    overflow: hidden;
 }
 
 header .header > .hamburgur-menu input#toggle:checked~.nav{
@@ -390,6 +391,7 @@ article{
     display: flex;
     justify-content: center;
 }
+
 /*ここからサイドバー*/
 section{
     position: sticky;
@@ -454,4 +456,34 @@ section div.sidebar div.sidemenu div.toHP{
 }
 section div.sidebar div.sidemenu div.toHP a{
     display: block;
+}
+
+@media screen and (max-width:900px) {
+    section{
+        display: none;
+    }
+}
+
+/*ここからフッター*/
+footer{
+    background-color: #00aaff;
+    display: flex;
+    flex-flow: column;
+}
+footer div.footernav{
+    color: #ffffff;
+}
+footer div.footernav nav > ul{
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: min(2.5vw,15px);
+}
+footer div.footernav nav > ul > li{
+
+}
+footer div.footernav nav > ul > li > ul{
+    list-style: none;
+    padding: 0;
 }
