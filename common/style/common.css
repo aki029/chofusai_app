@@ -53,6 +53,7 @@ header .header .title a span{
     font-size: clamp(0.7em,1.7vw,1.15em);               
     font-weight: bold;
     min-width: 23vw;
+    overflow: visible;
 }
 
 header .header .title img{
@@ -143,7 +144,7 @@ header .header .menu .nav ul li a.app-login:hover{
 
 header .header .hamburgur-menu{
     display: none;
-    width: 100%;
+    width: 50%;
     font-size: 0.85em;
     height: 50px;
 }
@@ -466,6 +467,7 @@ section div.sidebar div.sidemenu div.toHP a{
 
 /*ここからフッター*/
 footer{
+    margin-top: 20px;
     background-color: #00aaff;
     display: flex;
     flex-flow: column;
@@ -477,7 +479,7 @@ footer div.footernav nav > ul{
     list-style: none;
     padding: 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     font-size: min(2.5vw,15px);
 }
 footer div.footernav nav > ul > li{
@@ -486,4 +488,8 @@ footer div.footernav nav > ul > li{
 footer div.footernav nav > ul > li > ul{
     list-style: none;
     padding: 0;
+}
+footer div.footernav nav > ul > li > ul > li > a{
+    display: block;
+    margin: 5px 0;
 }
