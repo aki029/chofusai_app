@@ -21,7 +21,7 @@
     $page_flag = 0;
     if(!empty($_POST["btn_confirm"])){
         $page_flag = 1;
-        unset($_POST["btn_confirm"]);  //unset value of "submit-button"  
+        unset($_POST["btn_confirm"]);  //unset value of submit-button
     }elseif(!empty($_POST["btn_submit"])){
         $page_flag = 2;
         //データベース操作オブジェクトの宣言
@@ -46,7 +46,7 @@
     <article>
         <?php require_once 'sidebar.php';?>
         <main class="contents">
-            <div class="sponserform inputform">
+            <div class="sponsorform inputform">
                 <h1>協賛申請フォーム</h1>
                 <?php if($page_flag === 0): ?>
                     <form method="POST" enctype="multipart/form-data">

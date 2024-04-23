@@ -467,7 +467,7 @@ section div.sidebar div.sidemenu div.toHP a{
 
 /*ここからフッター*/
 footer{
-    font-size: min(2.5vw,15px);
+    font-size: min(2.7vw,15px);
     margin-top: 20px;
     background-color: #61caff;
     display: flex;
@@ -501,6 +501,9 @@ footer div.footernav nav > ul > li > ul > li > a{
 @media screen and (max-width:900px) {
     footer div.footernav nav > ul{
         flex-flow: column;
+    }
+    footer div.footernav nav > ul > li{
+        margin: 0 8vw;
     }
 }
 /*著作権*/

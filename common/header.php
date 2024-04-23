@@ -6,8 +6,7 @@
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
         <link rel="stylesheet" href="/app/common/style/common.css" type="text/css">
-        <link rel="stylesheet" href="style/input.css">
-        <script src="/app/common/script/flex.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="/app/apply/style/input.css">
     </head>
     <body>
         <header>

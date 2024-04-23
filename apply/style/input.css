@@ -1,0 +1,7 @@
+div.inputform{
+    margin: 0 10px;
+}
+div.inputform form input{
+    margin: 10px 0;
+    padding: 3px 3px;
+}
