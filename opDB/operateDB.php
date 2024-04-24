@@ -183,9 +183,7 @@ namespace opDB\OperateUserData;
                 if($result){
                     $this -> tmppath[$key] = $tmp_dir . $filename;
 
-                }else{
-                    echo "ファイルの送信に失敗しました";
-                }
+                }           
             }
         }
         

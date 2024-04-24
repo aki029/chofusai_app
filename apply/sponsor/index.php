@@ -14,7 +14,6 @@
     $dsn = "mysql:host=db;dbname=$dbname;charset=utf8;";
     
     
-    isset($_SESSION["id"]) ? $id = $_SESSION["id"] : $id = str_pad(random_int(0,pow(10,9)-1),10,0,STR_PAD_LEFT);
 
     require_once "operateDB.php";//DB操作オブジェクト生成用ファイル
 
@@ -70,7 +69,8 @@
                         <input type="submit" name="btn_confirm" class="OK" value="決定"/>
                     </form>
                     <?php elseif($page_flag === 1): ?>
-                        <?php
+                    <?php
+                    isset($_SESSION["id"]) ? $id = $_SESSION["id"] : $id = str_pad(random_int(0,pow(10,9)-1),10,0,STR_PAD_LEFT);
                     $sponsor = new opDB\OperateUserData\InputOfUser($id,$_POST["comname"],$_POST,$_FILES);
                     
                     $_SESSION["Data"] = serialize($sponsor);
@@ -89,7 +89,16 @@
                     <p>受け渡し方法：<?=htmlspecialchars($_POST['transway'])?></p>
                     <p>受け渡し日時：<?=date('Y年n月j日 H:i',strtotime($_POST['transferdate']))?></p>        
                     <p>広告ファイル：</p>
-                    <img src='<?=$sponsor -> tmppath["adfile"]?>' width='300' height='600'>
+                    <?php if($_POST["adfile"]):?>
+                    <img src='<?=$sponsor -> tmppath["adfile"]?>' style="
+                    <?php
+                    if($_POST["cash"] >= 5000 && $_POST["cash"] < 10000){echo "width:74mm;height:50mm;";}
+                    elseif($_POST["cash"] >= 10000 && $_POST["cash"] < 20000){echo "width:148mm;height:50mm;";}
+                    elseif($_POST["cash"] >= 20000 && $_POST["cash"] < 30000){echo "width:148mm;height:100mm;";}
+                    else{echo "width:148mm;height:200mm;";}
+                    ?>
+                    ">
+                    <?php endif;?>
                     <p>会社ホームページURL：<?=htmlspecialchars($_POST['comurl'])?></p>
                     <input type="submit" name="btn_back" class="NO" value="戻る"/>
                     <input type="submit" name="btn_submit" class="yes" value="送信"/>
