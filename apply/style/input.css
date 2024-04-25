@@ -5,3 +5,19 @@ div.inputform form input{
     margin: 10px 0;
     padding: 3px 3px;
 }
+div.inputform form input.yes{
+    width: 100px;
+}
+/*入力結果画面*/
+div.endregist{
+    height: 100%;
+}
+div.endregist a.tomypage{
+    display: block;
+    text-align: center;
+    padding: 10px 0;
+    background-color: coral;
+    color: #fff;
+    border-radius: 10px;
+    border-bottom: 4px solid #00000034;
+}

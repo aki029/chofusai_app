@@ -1,8 +1,10 @@
 html{
     font-size: 100%;
+    height: 100vh;
 }
 
 body{
+    height: 100%;
     display: flex;
     flex-flow: column;
     margin: 0;
@@ -16,6 +18,7 @@ a{
 header{
     margin: 5px 0;
     width: 100%;
+    min-width: 300px;
 }
 
 /*以下ヘッダーロゴ*/
@@ -39,7 +42,7 @@ header .header .title{
 header .header .title a{
     display: flex;
     height: 100%;
-    width: fit-content;
+    width: max-content;
     align-items: center;
 }
 
@@ -49,7 +52,7 @@ header .header .title a:hover{
 
 header .header .title a span{
     display: inline-block;
-    height: fit-content;
+    height: max-content;
     font-size: clamp(0.7em,1.7vw,1.15em);               
     font-weight: bold;
     min-width: 23vw;
@@ -88,7 +91,7 @@ header .header .menu .nav ul{
 }
 
 header .header .menu .nav ul li{
-    min-width: fit-content;
+    min-width: max-content;
     padding: 0 20px;
 }
 
@@ -144,7 +147,7 @@ header .header .menu .nav ul li a.app-login:hover{
 
 header .header .hamburgur-menu{
     display: none;
-    width: 50%;
+    width: max-content;
     font-size: 0.85em;
     height: 50px;
 }
@@ -215,7 +218,7 @@ header .header > .hamburgur-menu input#toggle:checked~.nav{
 
 header .header .hamburgur-menu .nav > ul{
     list-style: none;
-    min-width: fit-content;
+    min-width: max-content;
     white-space: nowrap;
     padding: 0;
     margin: 0;
@@ -254,10 +257,10 @@ header .header .hamburgur-menu .nav > ul > li > ul li{
         margin: 0;
     }
     header .header{
-        height: fit-content;
-        height: -moz-fit-content;
-        min-height: -moz-fit-content;
-        min-height: fit-content;
+        height: max-content;
+        height: -moz-max-content;
+        min-height: -moz-max-content;
+        min-height: max-content;
         box-shadow: 0px 1px 3px #0000004e;
         position: relative; 
         background: white;
@@ -320,7 +323,7 @@ header .menu-bar .menu-nav > ul > li > a{
     flex-flow: column;
     height: 100%;
     width: 100%;
-    min-width: fit-content;
+    min-width: max-content;
     align-items: center;
     justify-content: center;
     color: #fff;
@@ -342,7 +345,7 @@ header .menu-bar .menu-nav > ul > li .accordion{
     top: 100%;
     height: 0;
     width: 100%;
-    min-width: fit-content;
+    min-width: max-content;
     overflow: hidden;
     border: #00aaff 1px solid;
     opacity: 0;
@@ -369,7 +372,7 @@ header .menu-bar .menu-nav > ul > li > .accordion > ul > li{
     align-items: center;
     font-size: 0.9em;
     height: 100%;
-    min-width: fit-content;
+    min-width: max-content;
 }
 
 header .menu-bar .menu-nav > ul > li > .accordion > ul li a{
@@ -391,6 +394,7 @@ header .menu-bar .menu-nav > ul > li > div.accordion a:hover{
 article{
     display: flex;
     justify-content: center;
+    min-width: 300px;
 }
 
 /*ここからサイドバー*/
@@ -472,6 +476,9 @@ footer{
     background-color: #61caff;
     display: flex;
     flex-flow: column;
+    min-width: 300px;
+    position: sticky;
+    top: 100vh;
 }
 footer div.footernav{
     color: #ffffff;
@@ -509,4 +516,5 @@ footer div.footernav nav > ul > li > ul > li > a{
 /*著作権*/
 footer div.copyright{
     text-align: center;
+    color: #fff;
 }

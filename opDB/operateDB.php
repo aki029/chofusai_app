@@ -134,7 +134,7 @@ class OperateDB{
             $regist = "INSERT INTO {$this -> tablename} VALUES ({$params});";
             $prepared = $this -> pdo -> prepare($regist);
             $result = $prepared -> execute($user -> textdata);
-            if($result){header("Location: correct.php");}//登録後は該当フォルダのcorrect.phpに飛ぶ
+            if($result){return $result;}
         }
 
         /**
@@ -191,7 +191,7 @@ namespace opDB\OperateUserData;
          * 一次保存先の画像ファイルを最終保存します。
          */
         function SaveImage(){
-            $upload = "./upload";
+            $upload = "./upload/";
             $dirname = $upload.date("Y")."/";
             if(!file_exists($dirname)){
                 mkdir($upload);

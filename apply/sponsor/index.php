@@ -30,7 +30,7 @@
         
         $sponsor = unserialize($_SESSION["Data"]);
         unset($_SESSION["Data"]);
-        $opdb -> registDB($sponsor);
+        $result = $opdb -> registDB($sponsor);
     }
 ?>
     <?php require_once "header.php";?>
@@ -50,7 +50,7 @@
                     <form method="POST" enctype="multipart/form-data">
                         <p>メールアドレス：<input type="email" name="email" value=''></P>
                         <p>会社名：<input type="text" name="comname" required value=''></p>
-                        <p>電話番号：<input type="tel" name="tel" placeholder="☎TEL:" required value=''></p>
+                        <p>電話番号：<input type="tel" name="tel" placeholder="ハイフン無し" required value=''></p>
                         <!-- 郵便番号入力(7桁) -->
                         <p>郵便番号：<input type="text" name="zip" size="10" maxlength="7" onKeyUp="AjaxZip3.zip2addr(this,'','adress','adress');" placeholder="ハイフン無し" required value=''></p>
                         <!-- 住所入力(都道府県+以降の住所) -->
@@ -74,32 +74,37 @@
                     
                     $_SESSION["Data"] = serialize($sponsor);
                     ?>
-                <h2>入力内容を確認します。</h2>
-                <form method='POST' enctype='multipart/form-data'>
-                    <p>メールアドレス：<?=htmlspecialchars($_POST['email'])?></p>
-                    <p>会社名：<?=htmlspecialchars($_POST['comname'])?></p>
-                    <p>電話番号：<?=htmlspecialchars($_POST['tel'])?></p>
-                    <!-- 郵便番号入力(7桁) -->
-                    <p>郵便番号：<?=htmlspecialchars($_POST['zip'])?></p>
-                    <!-- 住所入力(都道府県+以降の住所) -->
-                    <p>住所：<?=htmlspecialchars($_POST['adress'])?></p>
-                    <p>番地・建物名：<?=htmlspecialchars($_POST['adressnum'])?></p>
-                    <p>金額：<?=htmlspecialchars($_POST['cash'])?></p>
-                    <p>受け渡し方法：<?=htmlspecialchars($_POST['transway'])?></p>
-                    <p>受け渡し日時：<?=date('Y年n月j日 H:i',strtotime($_POST['transferdate']))?></p>        
-                    <p>広告ファイル：</p>
-                    <?php if($_FILES["adfile"]["type"]):?>
-                    <?php
-                    if($_POST["cash"] >= 5000 && $_POST["cash"] < 10000){$imgstyle = "width:74mm;height:50mm;";}
-                    elseif($_POST["cash"] >= 10000 && $_POST["cash"] < 20000){$imgstyle = "width:148mm;height:50mm;";}
-                    elseif($_POST["cash"] >= 20000 && $_POST["cash"] < 30000){$imgstyle = "width:148mm;height:100mm;";}
-                    else{$imgstyle = "width:148mm;height:200mm;";}
-                    ?>
-                    <img src='<?=$sponsor -> tmppath["adfile"]?>' style="<?=$imgstyle?>">
-                    <?php endif;?>
-                    <p>会社ホームページURL：<?=htmlspecialchars($_POST['comurl'])?></p>
-                    <input type="submit" name="btn_back" class="NO" value="戻る"/>
-                    <input type="submit" name="btn_submit" class="yes" value="送信"/>
+                    <h2>入力内容を確認します。</h2>
+                    <form method='POST' enctype='multipart/form-data'>
+                        <p>メールアドレス：<?=htmlspecialchars($_POST['email'])?></p>
+                        <p>会社名：<?=htmlspecialchars($_POST['comname'])?></p>
+                        <p>電話番号：<?=htmlspecialchars($_POST['tel'])?></p>
+                        <!-- 郵便番号入力(7桁) -->
+                        <p>郵便番号：<?=htmlspecialchars($_POST['zip'])?></p>
+                        <!-- 住所入力(都道府県+以降の住所) -->
+                        <p>住所：<?=htmlspecialchars($_POST['adress'])?></p>
+                        <p>番地・建物名：<?=htmlspecialchars($_POST['adressnum'])?></p>
+                        <p>金額：<?=htmlspecialchars($_POST['cash'])?></p>
+                        <p>受け渡し方法：<?=htmlspecialchars($_POST['transway'])?></p>
+                        <p>受け渡し日時：<?=date('Y年n月j日 H:i',strtotime($_POST['transferdate']))?></p>        
+                        <p>広告ファイル：</p>
+                        <?php if($_FILES["adfile"]["type"]):?>
+                        <?php
+                        if($_POST["cash"] >= 5000 && $_POST["cash"] < 10000){$imgstyle = "width:74mm;height:50mm;";}
+                        elseif($_POST["cash"] >= 10000 && $_POST["cash"] < 20000){$imgstyle = "width:148mm;height:50mm;";}
+                        elseif($_POST["cash"] >= 20000 && $_POST["cash"] < 30000){$imgstyle = "width:148mm;height:100mm;";}
+                        else{$imgstyle = "width:148mm;height:200mm;";}
+                        ?>
+                        <img src='<?=$sponsor -> tmppath["adfile"]?>' style="<?=$imgstyle?>">
+                        <?php endif;?>
+                        <p>会社ホームページURL：<?php if($_POST["comurl"]):?><?=htmlspecialchars($_POST['comurl'])?><?php endif;?></p>
+                        <input type="image" name="btn_back" class="NO" />
+                        <input type="image" name="btn_submit" class="yes" src="/app/apply/img/submit.png"/>
+                    <?php elseif($result):?>
+                    <div class="endregist">
+                        <p>正常に登録されました</p>
+                        <a class="tomypage" href="/app/user/">マイページへ</a>
+                    </div>
                     <?php endif; ?>     
                 </div>
             </main>
