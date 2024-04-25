@@ -191,17 +191,17 @@ namespace opDB\OperateUserData;
          * 一次保存先の画像ファイルを最終保存します。
          */
         function SaveImage(){
-            $dirname = "./upload/".date("Y")."/";
+            $upload = "./upload";
+            $dirname = $upload.date("Y")."/";
             if(!file_exists($dirname)){
+                mkdir($upload);
                 mkdir($dirname);
             }
             foreach($this -> tmppath as $key => $value){
                 $filename[$key] = $this -> name . "." . pathinfo($value,PATHINFO_EXTENSION);
                 $this -> filepath[$key] = $dirname . $filename[$key];
                 $result = rename($value,$this -> filepath[$key]);
-                if($result){
-                    echo "Success to upload Image";
-                }else{
+                if(!$result){
                     exit("Failed to Upload");
                 }
             }            

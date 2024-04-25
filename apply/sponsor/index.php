@@ -10,7 +10,7 @@
     
     $dbname = "chofusai";
     $user = "chofusai";
-    $password = "m207t222";
+    $password = "M207chofu";
     $dsn = "mysql:host=db;dbname=$dbname;charset=utf8;";
     
     
@@ -30,7 +30,6 @@
         
         $sponsor = unserialize($_SESSION["Data"]);
         unset($_SESSION["Data"]);
-        var_dump($sponsor);
         $opdb -> registDB($sponsor);
     }
 ?>
@@ -89,15 +88,14 @@
                     <p>受け渡し方法：<?=htmlspecialchars($_POST['transway'])?></p>
                     <p>受け渡し日時：<?=date('Y年n月j日 H:i',strtotime($_POST['transferdate']))?></p>        
                     <p>広告ファイル：</p>
-                    <?php if($_POST["adfile"]):?>
-                    <img src='<?=$sponsor -> tmppath["adfile"]?>' style="
+                    <?php if($_FILES["adfile"]["type"]):?>
                     <?php
-                    if($_POST["cash"] >= 5000 && $_POST["cash"] < 10000){echo "width:74mm;height:50mm;";}
-                    elseif($_POST["cash"] >= 10000 && $_POST["cash"] < 20000){echo "width:148mm;height:50mm;";}
-                    elseif($_POST["cash"] >= 20000 && $_POST["cash"] < 30000){echo "width:148mm;height:100mm;";}
-                    else{echo "width:148mm;height:200mm;";}
+                    if($_POST["cash"] >= 5000 && $_POST["cash"] < 10000){$imgstyle = "width:74mm;height:50mm;";}
+                    elseif($_POST["cash"] >= 10000 && $_POST["cash"] < 20000){$imgstyle = "width:148mm;height:50mm;";}
+                    elseif($_POST["cash"] >= 20000 && $_POST["cash"] < 30000){$imgstyle = "width:148mm;height:100mm;";}
+                    else{$imgstyle = "width:148mm;height:200mm;";}
                     ?>
-                    ">
+                    <img src='<?=$sponsor -> tmppath["adfile"]?>' style="<?=$imgstyle?>">
                     <?php endif;?>
                     <p>会社ホームページURL：<?=htmlspecialchars($_POST['comurl'])?></p>
                     <input type="submit" name="btn_back" class="NO" value="戻る"/>
