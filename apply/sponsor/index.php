@@ -18,10 +18,11 @@
     require_once "operateDB.php";//DB操作オブジェクト生成用ファイル
 
     $page_flag = 0;
+    var_dump($_POST);
     if(!empty($_POST["btn_confirm"])){
         $page_flag = 1;
         unset($_POST["btn_confirm"]);  //unset value of submit-button
-    }elseif(!empty($_POST["btn_submit"])){
+    }elseif(!empty($_POST["btn_submit_x"]||!empty($_POST["btn_submit_y"]))){
         $page_flag = 2;
         //データベース操作オブジェクトの宣言
         $colparams = require "./sp_mkquery.php";
@@ -99,7 +100,7 @@
                         <?php endif;?>
                         <p>会社ホームページURL：<?php if($_POST["comurl"]):?><?=htmlspecialchars($_POST['comurl'])?><?php endif;?></p>
                         <input type="image" name="btn_back" class="NO" />
-                        <input type="image" name="btn_submit" class="yes" src="/app/apply/img/submit.png"/>
+                        <input type="image" name="btn_submit" class="yes" src="/app/apply/img/submit.png" alt="送信"/>
                     <?php elseif($result):?>
                     <div class="endregist">
                         <p>正常に登録されました</p>
