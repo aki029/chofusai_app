@@ -6,34 +6,56 @@
     $year = date("Y");
     $kind = "sponsor";
     
-    $tablename = "{$year}{$kind}";
-    
-    $dbname = "chofusai";
-    $user = "chofusai";
-    $password = "M207chofu";
-    $dsn = "mysql:host=db;dbname=$dbname;charset=utf8;";
-    
     
 
     require_once "operateDB.php";//DB操作オブジェクト生成用ファイル
 
     $page_flag = 0;
-    var_dump($_POST);
+    var_dump($_POST);  
+    $result = null;
     if(!empty($_POST["btn_confirm"])){
         $page_flag = 1;
         unset($_POST["btn_confirm"]);  //unset value of submit-button
-    }elseif(!empty($_POST["btn_submit_x"]||!empty($_POST["btn_submit_y"]))){
+
+    }elseif(!empty($_POST["btn_submit"])){
         $page_flag = 2;
         //データベース操作オブジェクトの宣言
-        $colparams = require "./sp_mkquery.php";
+        /*$colparams = require "./sp_mkquery.php";
         $opdb = new opDB\OperateDB\OperateDB($dsn,$user,$password,$tablename,$colparams);
         $opdb -> mktable(); //テーブル作成
         
         $sponsor = unserialize($_SESSION["Data"]);
         unset($_SESSION["Data"]);
-        $result = $opdb -> registDB($sponsor);
+        $result = $opdb -> registDB($sponsor);*/
+    $ch = curl_init();
+    $testuser = unserialize($_SESSION['Data']);
+    $postdata = json_encode(
+        array(
+            'user'=>http_build_query($testuser)
+            )
+        );
+        
+        $opts = array('http' =>
+        array(
+            'method'  => 'POST',
+            'header'  => 'Content-type: application/x-www-form-urlencoded',
+            'content' => $postdata
+            )
+        );
+        $headers = [
+            'Content-Type: application/x-www-form-urlencoded',
+            'Accept-Charset: UTF-8',
+        ];
+        curl_setopt($ch, CURLOPT_URL, 'http://172.19.0.5/app/apply/opDB/registDB.php');
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $login_info_return_value = curl_exec($ch);
+        echo $login_info_return_value;
+        echo curl_error($ch);
     }
-?>
+    ?>
     <?php require_once "header.php";?>
     <!--insert title-->
     <script>
@@ -76,7 +98,7 @@
                     $_SESSION["Data"] = serialize($sponsor);
                     ?>
                     <h2>入力内容を確認します。</h2>
-                    <form method='POST' enctype='multipart/form-data'>
+                    <form method='POST' enctype='application/x-www-form-urlencoded'>
                         <p>メールアドレス：<?=htmlspecialchars($_POST['email'])?></p>
                         <p>会社名：<?=htmlspecialchars($_POST['comname'])?></p>
                         <p>電話番号：<?=htmlspecialchars($_POST['tel'])?></p>
@@ -99,8 +121,8 @@
                         <img src='<?=$sponsor -> tmppath["adfile"]?>' style="<?=$imgstyle?>">
                         <?php endif;?>
                         <p>会社ホームページURL：<?php if($_POST["comurl"]):?><?=htmlspecialchars($_POST['comurl'])?><?php endif;?></p>
-                        <input type="image" name="btn_back" class="NO" />
-                        <input type="image" name="btn_submit" class="yes" src="/app/apply/img/submit.png" alt="送信"/>
+                        <input type="submit" name="btn_back" class="NO" value="戻る"/>
+                        <input type="submit" name="btn_submit" class="yes" value="送信"/>
                     <?php elseif($result):?>
                     <div class="endregist">
                         <p>正常に登録されました</p>
