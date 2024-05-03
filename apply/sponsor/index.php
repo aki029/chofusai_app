@@ -29,7 +29,7 @@ use function PHPSTORM_META\type;
     $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8;";
 
     require_once "operateDB.php";
-    aa
+    
     $page_flag = 0;
     if(!empty($_POST["btn_confirm"])){
         $page_flag = 1;
