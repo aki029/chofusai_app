@@ -209,7 +209,7 @@ header .header > .hamburgur-menu .nav{
     background-color: #ffffff;
     z-index: 999;
     transition-duration: 1s;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 header .header > .hamburgur-menu input#toggle:checked~.nav{
@@ -222,6 +222,7 @@ header .header .hamburgur-menu .nav > ul{
     white-space: nowrap;
     padding: 0;
     margin: 0;
+    overflow-x: hidden;
 }
 
 header .header .hamburgur-menu .nav > ul li a{
@@ -477,8 +478,7 @@ footer{
     display: flex;
     flex-flow: column;
     min-width: 300px;
-    position: sticky;
-    top: 100vh;
+    width: 100%;
 }
 footer div.footernav{
     color: #ffffff;

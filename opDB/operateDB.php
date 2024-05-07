@@ -9,13 +9,18 @@ namespace opDB;
  */
 define("CHOFUDB_NAME","chofusai");
 /**
- * @var $user always means "root"
+ * @var $user always means "chofusai"
  */
-define("CHOFUDB_USER","root");
+define("CHOFUDB_USER","chofusai");
 /**
  * @var $dsn database source name
  */
 define("CHOFUDB_DSN","mysql:host=localhost;dbname=".CHOFUDB_NAME.";charset=utf8");
+
+/**
+ * @var $password always means "M207chofu"
+ */
+define("CHOFUDB_PW","M207chofu");
 
 /**
  * データベース操作オブジェクトを格納した名前空間です。
@@ -29,9 +34,7 @@ namespace opDB\OperateDB;
  * PDOobjectと接続用パラメータ、テーブルカラムの詳細を格納した配列と実行クエリ、テーブル名をメンバとして持ちます。
  * PDOobjectと接続用パラメータはインスタンス生成時とシリアライズを解除した時に使われます。
  */
-class OperateDB{
-
-        protected $pdo;//データベース操作用オブジェクト
+class pdoparams{
 
         protected $dsn,$user,$password;//接続用パラメータ
 
@@ -66,7 +69,6 @@ class OperateDB{
             $this -> user = $user;
             $this -> password = $password;
             $this -> tablename = $tablename;
-            $this -> connectDB();
             $this ->colparams = $colparams;
         }
 
@@ -95,23 +97,6 @@ class OperateDB{
         }
 
         /**
-         * Create table on the database easily.
-         * This method uses SQL Query:"CREATE TABLE IF NOT EXISTS {$tablename} ({$params:joined strings,the keys of $colparams and its value}) DEFAULT CHARSET=utf8;"
-         * So, if you want to make table more detailed, you should use $pdo:PDOobject in this class, and manually use method contained in it.
-         */
-        public function mktable(){
-            $params = null;
-            foreach($this ->colparams as $key => $value){
-                $params .= $key . " " . $value;
-                if(next($this -> colparams)){
-                    $params .= ",";
-                }
-            }
-            $mktable = "CREATE TABLE IF NOT EXISTS {$this -> tablename}({$params}) DEFAULT CHARSET=utf8;";
-            $this -> pdo -> query($mktable);
-        }
-
-        /**
          * Registing to database
          * Insert datas to table made with function: mktable() of this object.
          * This method uses SQL Query:"INSERT INTO {$tablename} VALUES ({$params:the keys of $colparams});"
@@ -120,22 +105,6 @@ class OperateDB{
          * @see \opDB\OperateUserData\Imagehundler::SaveImage()
          * @see \opDB\OperateUserData\InputOfUser::Molddata()
          */
-        public function registDB(\opDB\OperateUserData\Userdata $user) {
-            $params = null;
-            $keys = array_keys($this -> colparams);
-            foreach($keys as $key){
-                $params .= ":{$key}";
-                if(next($keys)){
-                    $params .= ",";
-                }
-            }
-            if($user -> file)$user -> SaveImage();
-            $user -> Molddata();
-            $regist = "INSERT INTO {$this -> tablename} VALUES ({$params});";
-            $prepared = $this -> pdo -> prepare($regist);
-            $result = $prepared -> execute($user -> textdata);
-            if($result){return $result;}
-        }
 
         /**
          * 
@@ -182,8 +151,7 @@ namespace opDB\OperateUserData;
                 $result = move_uploaded_file($file[$key]["tmp_name"], $tmp_dir . $filename);
                 if($result){
                     $this -> tmppath[$key] = $tmp_dir . $filename;
-
-                }           
+                }
             }
         }
         
@@ -207,19 +175,6 @@ namespace opDB\OperateUserData;
             }            
         }
 
-        /**
-         * 一次保存された画像ファイルからデータをテキストとして取り出します。
-         * データベース等へ格納する際はバイナリ形式で保存してください。
-         * @return array|string 取得したデータを返します。
-         */
-        public function get_data() :array|string{
-            $result = array();
-            foreach($this -> tmppath as $key => $value){
-                $result[$key] = file_get_contents($value);
-            }
-            return $result;
-        }
-
         public abstract function Molddata();
     }
     
@@ -240,9 +195,7 @@ namespace opDB\OperateUserData;
             $this -> id = $id;
             $this -> name = $name;
             
-        }
-        
-        
+        }        
     }
     
     /**
@@ -253,14 +206,6 @@ namespace opDB\OperateUserData;
         public array $textdata;
         
         public array $file;
-
-        /**
-         * filedataにはアップロードされた画像のテキストデータが保存されますが、現状バイナリ形式でのデータベースへの保存は行いません。
-         * 機能拡張の余地のために残していますが、今後使う予定がなければ削除してかまいません。
-         * @var array $filedata text|binary data of uploaded file
-         * @see \opDB\OperateUserData\Imagehundler::get_data()
-         */
-        public array $filedata;
         
         /**
          * データ格納オブジェクトの初期化を行います。
@@ -278,7 +223,6 @@ namespace opDB\OperateUserData;
             if($file){
                 $this -> file = $file;
                 $this -> setTemp();
-                $this -> filedata = $this -> get_data();
             }
         }
         
@@ -302,6 +246,7 @@ namespace opDB\OperateUserData;
             }
             $this -> textdata["id"] = $this -> id;
         }
+
     }
     
     
