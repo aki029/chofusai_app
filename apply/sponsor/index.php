@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    ini_set("display_errors",0);
+    ini_set("display_errors",1);
 
     $nametag = "comname";
     $category = 11;
@@ -99,6 +99,7 @@
         unset($_POST["btn_confirm"]);  //unset value of submit-button
         $id = $category.'0001';
         $user = new \opDB\OperateUserData\InputOfUser($id,$_POST[$nametag],$_POST,$_FILES);
+        $user -> textdata["id"] = $id;
         if($_POST["cash"] >= 5000 && $_POST["cash"] < 10000){$imgstyle = "width:148px;height:100px;";}
         elseif($_POST["cash"] >= 10000 && $_POST["cash"] < 20000){$imgstyle = "width:296px;height:100px;";}
         elseif($_POST["cash"] >= 20000 && $_POST["cash"] < 30000){$imgstyle = "width:296px;height:200px;";}
@@ -159,11 +160,10 @@
                         <input type="submit" name="btn_confirm" class="OK" value="決定"/>
                     <?php elseif($page_flag===1):?>
                         <?php 
-                                    $opdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,$tablename,$colparams); 
-
+                            $opdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,$tablename,$colparams); 
                             $user_post = json_encode($user);
                             $opdb_post = json_encode($opdb);
-                            var_dump(json_decode($opdb_post));
+                            var_dump(json_decode($user_post));
                         ?>
                         <input type="submit" name="btn_back" class="NO" value="戻る"/>
                         <input type="button" name="btn_submit" class="yes" id="submit" value="送信"/>
@@ -190,10 +190,10 @@
                     data:{'user':<?= $user_post?>, 'opdb':<?=$opdb_post?>},
                     timeout:3000,
                 }).done(function(data){
-                    alert(data)
+                    alert(data);
                 }).fail(function(XMLHttpRequest,textStatus,errorThrown){
                     alert(errorThrown);
-                    event.preventDefault()
+                    event.preventDefault();
                 })
             }
             )
