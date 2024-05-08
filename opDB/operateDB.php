@@ -36,85 +36,34 @@ namespace opDB\OperateDB;
  */
 class pdoparams{
 
-        protected $dsn,$user,$password;//接続用パラメータ
+    public $dsn,$user,$password;//接続用パラメータ
 
-        public array $colparams;//テーブルを作成する際に使う。(column)
-        public array $querys;//SQLクエリ    
-        public $tablename; //SQL文実行で使うテーブル名
-        
-        public function __sleep() {
-            return ["dsn","user","password","querys","tablename"];
-        }
+    public array $colparams;//テーブルを作成する際に使う。(column)
+    public array $querys;//SQLクエリ    
+    public $tablename; //SQL文実行で使うテーブル名
 
-        public function __wakeup() {
-            $this -> connectDB();
-        }
-
-        /**
-         * データベース操作オブジェクトの初期化を行います。
-         * @param string $dsn Databese Source Name.
-         * @param string $user Database User.
-         * @param string|null $password Database Password.
-         * @param string $tablename 本オブジェクトのmktable()メソッドにより作られるテーブルの名前.
-         * @param array|null $colparams 上記メソッドで作られるテーブルのカラム(列)の名前をキー名、その型とその他設定を値とする連想配列.
-         * 
-         * Explain of $colparams
-         * 
-         * テーブルの列名にINT型で主キー、自動加算される"id"と可変長文字列型で全角１０文字以内の"name"という列を作成するとき、$colparamsの中身は以下のようにする必要があります.
-         *
-         *  $colparams = ["id" => INT PRIMARY KEY AUTO_INCREMENT,"name" => VARCHAR(20)]
-         */
-        public function __construct($dsn,$user,$password,$tablename,array $colparams=NULL) {
-            $this -> dsn = $dsn;
-            $this -> user = $user;
-            $this -> password = $password;
-            $this -> tablename = $tablename;
-            $this ->colparams = $colparams;
-        }
-
-        public function connectDB() {
-            ini_set("display_errors",1);
-            error_reporting(E_ALL);
-            try{
-                $this -> pdo = new \PDO($this->dsn,$this->user, $this->password,[
-                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
-                ]);
-            }catch(\PDOException $e){
-                echo "<p>Faild:" . $e->getMessage() . "</p>";
-                exit("データベースに接続できませんでした");
-            }
-
-        }
-
-        /**
-         * Create and add to colparams with each name of key and option.
-         * @param string $name column name
-         * @param string $option column option
-         */
-        public function makeparams(string $name,string $option) {
-            $this -> colparams[$name] = $option;
-        }
-
-        /**
-         * Registing to database
-         * Insert datas to table made with function: mktable() of this object.
-         * This method uses SQL Query:"INSERT INTO {$tablename} VALUES ({$params:the keys of $colparams});"
-         * If you want to insert datas into table, also you should use pdo.
-         * @param \opDB\OperateUserData\InputOfUser $user contains Userdatas:id,name,posteddata
-         * @see \opDB\OperateUserData\Imagehundler::SaveImage()
-         * @see \opDB\OperateUserData\InputOfUser::Molddata()
-         */
-
-        /**
-         * 
-         */
-        public function get_userdata(\opDB\OperateUserData\Userdata $user) {
-            $params = null;
-            
-        }
-
+    /**
+     * データベース操作オブジェクトの初期化を行います。
+     * @param string $dsn Databese Source Name.
+     * @param string $user Database User.
+     * @param string|null $password Database Password.
+     * @param string $tablename 本オブジェクトのmktable()メソッドにより作られるテーブルの名前.
+     * @param array|null $colparams 上記メソッドで作られるテーブルのカラム(列)の名前をキー名、その型とその他設定を値とする連想配列.
+     * 
+     * Explain of $colparams
+     * 
+     * テーブルの列名にINT型で主キー、自動加算される"id"と可変長文字列型で全角１０文字以内の"name"という列を作成するとき、$colparamsの中身は以下のようにする必要があります.
+     *
+     *  $colparams = ["id" => INT PRIMARY KEY AUTO_INCREMENT,"name" => VARCHAR(20)]
+     */
+    public function __construct($dsn,$user,$password,$tablename,array $colparams=NULL) {
+        $this -> dsn = $dsn;
+        $this -> user = $user;
+        $this -> password = $password;
+        $this -> tablename = $tablename;
+        $this ->colparams = $colparams;
     }
+}
  
 /**
  * ユーザーデータ管理用オブジェクトを格納した名前空間です。

@@ -161,9 +161,8 @@
                     <?php elseif($page_flag===1):?>
                         <?php 
                             $opdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,$tablename,$colparams); 
-                            $user_post = json_encode($user);
-                            $opdb_post = json_encode($opdb);
-                            var_dump(json_decode($user_post));
+                            $user_post = serialize($user);
+                            $opdb_post = serialize($opdb);
                         ?>
                         <input type="submit" name="btn_back" class="NO" value="戻る"/>
                         <input type="button" name="btn_submit" class="yes" id="submit" value="送信"/>
@@ -187,10 +186,11 @@
                     url:url,
                     type:'POST',
                     dataType:'text',
-                    data:{'user':<?= $user_post?>, 'opdb':<?=$opdb_post?>},
+                    data:{'user':<?=$user_post?>, 'opdb':<?=$opdb_post?>},
                     timeout:3000,
                 }).done(function(data){
                     alert(data);
+                    console.log(data);
                 }).fail(function(XMLHttpRequest,textStatus,errorThrown){
                     alert(errorThrown);
                     event.preventDefault();
@@ -201,3 +201,7 @@
         )
     </script>
 <?php require_once 'footer.php'?>
+<?php 
+function serialize_write(\opDB\OperateUserData\InputOfUser $user,\opDB\OperateDB\pdoparams $opdb){
+    $filepath = "ser_{$user -> name}_tmp";
+}
