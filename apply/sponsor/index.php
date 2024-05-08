@@ -203,5 +203,7 @@
 <?php require_once 'footer.php'?>
 <?php 
 function serialize_write(\opDB\OperateUserData\InputOfUser $user,\opDB\OperateDB\pdoparams $opdb){
+    $uniqid = 
     $filepath = "ser_{$user -> name}_tmp";
+    
 }
