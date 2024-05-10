@@ -106,9 +106,9 @@
         else{$imgstyle = "width:296px;height:400px;";}
     }elseif(!empty($_POST["btn_submit"])){
         $page_flag = 2;
-        $user = $_SESSION["user"];
+        $user = unserialize($_SESSION["user"]);
         unset($_SESSION["user"]);
-        $opdb = $_SESSION["opdb"];
+        $opdb = unserialize($_SESSION["opdb"]);
         unset($_SESSION["opdb"]);
         $opdb -> mktable();
 
@@ -170,8 +170,8 @@
                     <?php elseif($page_flag===1):?>
                         <?php 
                             $opdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,$tablename,$colparams); 
-                            $_SESSION["user"] = $user;
-                            $_SESSION["opdb"] = $opdb;
+                            $_SESSION["user"] = serialize($user);
+                            $_SESSION["opdb"] = serialize($opdb);
                         ?>
                         <input type="submit" name="btn_back" class="NO" value="戻る"/>
                         <input type="submit" name="btn_submit" class="yes"  value="送信"/>
