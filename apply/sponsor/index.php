@@ -106,6 +106,15 @@
         else{$imgstyle = "width:296px;height:400px;";}
     }elseif(!empty($_POST["btn_submit"])){
         $page_flag = 2;
+        $user = $_SESSION["user"];
+        unset($_SESSION["user"]);
+        $opdb = $_SESSION["opdb"];
+        unset($_SESSION["opdb"]);
+        $opdb -> mktable();
+
+        $result = $opdb -> registDB($user);
+
+        
     }
 ?>
 
@@ -161,11 +170,11 @@
                     <?php elseif($page_flag===1):?>
                         <?php 
                             $opdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,$tablename,$colparams); 
-                            $user_post = serialize($user);
-                            $opdb_post = serialize($opdb);
+                            $_SESSION["user"] = $user;
+                            $_SESSION["opdb"] = $opdb;
                         ?>
                         <input type="submit" name="btn_back" class="NO" value="戻る"/>
-                        <input type="button" name="btn_submit" class="yes" id="submit" value="送信"/>
+                        <input type="submit" name="btn_submit" class="yes"  value="送信"/>
                     <?php elseif($page_flag===2):?>
                     <div class="endregist">
                         <p>正常に登録されました</p>
@@ -176,34 +185,4 @@
             </div>
         </main>
     </article>
-    <script>
-        $(function(){
-            $("#submit").on("click",
-            function(event){
-                alert('送信します');
-                var url = 'http://chofusai.com/app/apply/opDB/registDB.php';
-                $.ajax({
-                    url:url,
-                    type:'POST',
-                    dataType:'text',
-                    data:{'user':<?=$user_post?>, 'opdb':<?=$opdb_post?>},
-                    timeout:3000,
-                }).done(function(data){
-                    alert(data);
-                    console.log(data);
-                }).fail(function(XMLHttpRequest,textStatus,errorThrown){
-                    alert(errorThrown);
-                    event.preventDefault();
-                })
-            }
-            )
-        }
-        )
-    </script>
 <?php require_once 'footer.php'?>
-<?php 
-function serialize_write(\opDB\OperateUserData\InputOfUser $user,\opDB\OperateDB\pdoparams $opdb){
-    $uniqid = 
-    $filepath = "ser_{$user -> name}_tmp";
-    
-}

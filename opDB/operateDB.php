@@ -36,6 +36,8 @@ namespace opDB\OperateDB;
  */
 class pdoparams{
 
+    protected $pdo;
+
     public $dsn,$user,$password;//接続用パラメータ
 
     public array $colparams;//テーブルを作成する際に使う。(column)
@@ -62,6 +64,62 @@ class pdoparams{
         $this -> password = $password;
         $this -> tablename = $tablename;
         $this ->colparams = $colparams;
+    }
+    
+    public function connectDB(){
+        error_reporting(E_ALL);
+        try{
+            $this -> pdo = new \PDO($this -> dsn,$this -> user, $this -> password,[
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+            ]);
+        }catch(\PDOException $e){
+            echo "<p>Faild:" . $e->getMessage() . "</p>";
+            exit("データベースに接続できませんでした");
+        }
+    }
+
+    /**
+     * Create table on the database easily.
+     * This method uses SQL Query:"CREATE TABLE IF NOT EXISTS {$tablename} ({$params:joined strings,the keys of $colparams and its value}) DEFAULT CHARSET=utf8;"
+     * So, if you want to make table more detailed, you should use $pdo:PDOobject in this class, and manually use method contained in it.
+     */
+    public function mktable(){
+        $params = null;
+        foreach($this ->colparams as $key => $value){
+            $params .= $key . " " . $value;
+            if(next($this -> colparams)){
+                $params .= ",";
+            }
+        }
+        $mktable = "CREATE TABLE IF NOT EXISTS {$this -> tablename}({$params}) DEFAULT CHARSET=utf8;";
+        $this -> pdo -> query($mktable);
+    }
+
+    /**
+     * Registing to database
+     * Insert datas to table made with function: mktable() of this object.
+     * This method uses SQL Query:"INSERT INTO {$tablename} VALUES ({$params:the keys of $colparams});"
+     * If you want to insert datas into table, also you should use pdo.
+     * @param \opDB\OperateUserData\InputOfUser $user contains Userdatas:id,name,posteddata
+     * @see \opDB\OperateUserData\Imagehundler::SaveImage()
+     * @see \opDB\OperateUserData\InputOfUser::Molddata()
+     */
+    public function registDB(\opDB\OperateUserData\Userdata $user) {
+        $params = null;
+        $keys = array_keys($this -> colparams);
+        foreach($keys as $key){
+            $params .= ":{$key}";
+            if(next($keys)){
+                $params .= ",";
+            }
+        }
+        if($user -> file)$user -> SaveImage();
+        $user -> Molddata();
+        $regist = "INSERT INTO {$this -> tablename} VALUES ({$params});";
+        $prepared = $this -> pdo -> prepare($regist);
+        $result = $prepared -> execute($user -> textdata);
+        if($result){return $result;}
     }
 }
  
