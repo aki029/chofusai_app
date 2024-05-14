@@ -1,10 +1,9 @@
 <?php
     session_start();
 
-    ini_set("display_errors",1);
+    ini_set('display_errors','1');
 
     $nametag = "comname";
-    $category = 11;
     $imgstyle='';
     $params = [
         'メールアドレス' =>[
@@ -79,41 +78,65 @@
                 'class'=>'comurl']]],
             'col'=>['comurl'=>'text']]
         ]; 
-    $year = date("Y");
-    $kind = "sponsor";
-    $tablename = $year.$kind;
-    
-    
-
-    require_once "operateDB.php";//DB操作オブジェクト生成用ファイル
-
-    $colparams = ['id'=>'INT(7) PRIMARY KEY AUTO_INCREMENT'];
-    foreach($params as $col){
-        $colparams = array_merge($colparams,$col['col']);
-    }
-    
-    
-    $page_flag = 0;
-    if(!empty($_POST["btn_confirm"])){
-        $page_flag = 1;
-        unset($_POST["btn_confirm"]);  //unset value of submit-button
-        $id = $category.'0001';
-        $user = new \opDB\OperateUserData\InputOfUser($id,$_POST[$nametag],$_POST,$_FILES);
-        $user -> textdata["id"] = $id;
+    if($_POST['cash']){
         if($_POST["cash"] >= 5000 && $_POST["cash"] < 10000){$imgstyle = "width:148px;height:100px;";}
         elseif($_POST["cash"] >= 10000 && $_POST["cash"] < 20000){$imgstyle = "width:296px;height:100px;";}
         elseif($_POST["cash"] >= 20000 && $_POST["cash"] < 30000){$imgstyle = "width:296px;height:200px;";}
         else{$imgstyle = "width:296px;height:400px;";}
+    }
+    $year = date("Y");
+    $kind = "sponsor";
+    $tablename = $year.$kind;
+    
+    /**
+     * 本スクリプトを使う際には以下の名前のパラメータを用意してください。
+     * $nametag ユーザー名を表す連想配列のキー名
+     * $imgstyle 入力内容によって画像サイズを変える際は条件式とともに指定
+     * $params フォームの入力欄生成とデータベースの操作に使用
+     * htmlキーとcolキーで指定すること。
+     * $tablename 作成するテーブル名
+     */
+
+    require_once "operateDB.php";//DB操作オブジェクト生成用ファイル
+    //DB操作用連想配列生成
+    $colparams = [];
+    foreach($params as $col){
+        $colparams = array_merge($colparams,$col['col']);
+    }
+
+    $usercolumns = ['name'=>'varchar(255) not null unique key'];
+    
+    //ページ出力操作
+    $page_flag = 0;
+    if(!empty($_POST["btn_confirm"])){
+        $page_flag = 1;
+        
+        unset($_POST["btn_confirm"]);  //unset value of submit-button
+        $id = isset($_SESSION['id']) ? $_SESSION['id'] : null;
+        $user = new \opDB\OperateUserData\InputOfUser($id,$_POST[$nametag],$_POST,$_FILES);
+        $userbasic = new \opDB\OperateUserData\Userdata($id,$_POST[$nametag]);
     }elseif(!empty($_POST["btn_submit"])){
         $page_flag = 2;
         $user = unserialize($_SESSION["user"]);
-        unset($_SESSION["user"]);
         $opdb = unserialize($_SESSION["opdb"]);
+        $opdb -> connectDB();
+        unset($_SESSION["user"]);
         unset($_SESSION["opdb"]);
         $opdb -> mktable();
 
-        $result = $opdb -> registDB($user);
+        $userbasic = unserialize($_SESSION['userbasic']);
+        $useropdb = unserialize($_SESSION['useropdb']);
+        $useropdb -> connectDB();
+        unset($_SESSION['userbasic']);
+        unset($_SESSION['useropdb']);
+        $useropdb -> mktable();
 
+        //$id = $useropdb -> registDB($userbasic);
+        //var_dump($id);
+        
+        $user -> id = 1;
+        $result = $opdb -> registDB($user);
+        echo $result;
         
     }
 ?>
@@ -170,8 +193,11 @@
                     <?php elseif($page_flag===1):?>
                         <?php 
                             $opdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,$tablename,$colparams); 
+                            $useropdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,'Users',$usercolumns);
                             $_SESSION["user"] = serialize($user);
                             $_SESSION["opdb"] = serialize($opdb);
+                            $_SESSION['useropdb'] = serialize($useropdb);
+                            $_SESSION['userbasic'] = serialize($userbasic);
                         ?>
                         <input type="submit" name="btn_back" class="NO" value="戻る"/>
                         <input type="submit" name="btn_submit" class="yes"  value="送信"/>

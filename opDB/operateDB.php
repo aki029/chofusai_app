@@ -66,6 +66,9 @@ class pdoparams{
         $this ->colparams = $colparams;
     }
     
+    /**
+     * connect Database with pramas of this object
+     */
     public function connectDB(){
         error_reporting(E_ALL);
         try{
@@ -85,10 +88,12 @@ class pdoparams{
      * So, if you want to make table more detailed, you should use $pdo:PDOobject in this class, and manually use method contained in it.
      */
     public function mktable(){
+        $colparams = !isset($this -> colparams['id']) ? ['id'=>"INT(5) ZEROFILL PRIMARY KEY  AUTO_INCREMENT"] : $this -> colparams;
+        foreach($this -> colparams as $key => $col){$colparams[$key] = $col;}
         $params = null;
-        foreach($this ->colparams as $key => $value){
+        foreach($colparams as $key => $value){
             $params .= $key . " " . $value;
-            if(next($this -> colparams)){
+            if(next($colparams)){
                 $params .= ",";
             }
         }
@@ -107,19 +112,25 @@ class pdoparams{
      */
     public function registDB(\opDB\OperateUserData\Userdata $user) {
         $params = null;
+        $columns = null;
         $keys = array_keys($this -> colparams);
         foreach($keys as $key){
             $params .= ":{$key}";
+            $columns .= "{$key}";
             if(next($keys)){
                 $params .= ",";
+                $columns .= ",";
             }
         }
         if($user -> file)$user -> SaveImage();
+        var_dump($columns);
         $user -> Molddata();
-        $regist = "INSERT INTO {$this -> tablename} VALUES ({$params});";
+        var_dump($user -> textdata);
+        var_dump($params);
+        $regist = "INSERT INTO {$this -> tablename} ({$columns}) VALUES ({$params});";
+        var_dump($regist);
         $prepared = $this -> pdo -> prepare($regist);
-        $result = $prepared -> execute($user -> textdata);
-        if($result){return $result;}
+        $prepared -> execute($user -> textdata);
     }
 }
  
@@ -193,16 +204,21 @@ namespace opDB\OperateUserData;
         
         public $name;
         
+        public array $textdata;
         /**
          * ユーザーオブジェクトの初期化を行います。
          * @param mixed $id ユーザーID
          * @param mixed $name　ユーザー名
+         * @param array $textdata　データベース登録用のデータ配列
          */
         public function __construct($id,$name){
             $this -> id = $id;
-            $this -> name = $name;
-            
-        }        
+            $this -> name = $name;  
+        } 
+        
+        public function Molddata(){
+            $this -> textdata['name'] = $this -> name;
+        }
     }
     
     /**
@@ -210,17 +226,17 @@ namespace opDB\OperateUserData;
      */
     class InputOfUser extends Userdata{
         use Imagehundler;
-        public array $textdata;
         
         public array $file;
         
+        public array $textdata;
         /**
          * データ格納オブジェクトの初期化を行います。
          * $textdataには$_POST変数をそのまま代入できます。その場合、作成するデータベースのカラムに応じて送信ボタンのPOSTデータはunsetメソッドを通して削除する必要があります。
          * @param mixed $id user id
          * @param mixed $name user name
-         * @param array $textdata array of posted data
          * @param array $file array of posted file, but in most cases, it may contain only one file
+         * @param array $textdata array of posted data
          * @see \opDB\OperateUserData\Imagehundler::setTemp()
          * @see \opDB\OperateUserData\Imagehundler::get_data()
          */
@@ -251,7 +267,7 @@ namespace opDB\OperateUserData;
                     $this -> textdata[$key] = $value;
                 }
             }
-            $this -> textdata["id"] = $this -> id;
+           // $this -> textdata['id'] = $this -> id;
         }
 
     }
