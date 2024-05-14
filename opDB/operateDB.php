@@ -36,7 +36,7 @@ namespace opDB\OperateDB;
  */
 class pdoparams{
 
-    protected $pdo;
+    public $pdo;
 
     public $dsn,$user,$password;//接続用パラメータ
 
@@ -111,8 +111,8 @@ class pdoparams{
      * @see \opDB\OperateUserData\InputOfUser::Molddata()
      */
     public function registDB(\opDB\OperateUserData\Userdata $user) {
-        $params = null;
         $columns = null;
+        $params = null;
         $keys = array_keys($this -> colparams);
         foreach($keys as $key){
             $params .= ":{$key}";
@@ -123,15 +123,38 @@ class pdoparams{
             }
         }
         if($user -> file)$user -> SaveImage();
-        var_dump($columns);
         $user -> Molddata();
-        var_dump($user -> textdata);
-        var_dump($params);
-        $regist = "INSERT INTO {$this -> tablename} ({$columns}) VALUES ({$params});";
-        var_dump($regist);
-        $prepared = $this -> pdo -> prepare($regist);
-        $prepared -> execute($user -> textdata);
+        if($this -> Detect_Avoid($user)){$params = null;
+            $regist = "INSERT INTO {$this -> tablename} ({$columns}) VALUES ({$params});";
+            $prepared = $this -> pdo -> prepare($regist);
+            $prepared -> execute($user -> textdata);
+        }else{
+            $regist = "UPDATE {$this -> tablename} ({$columns})";
+        }
+
+        //ID get and return
+        $id = $user -> getID($this);
+        return $id[0];
     }
+
+    public function Serch(\opDB\OperateUserData\Userdata $user,$target){
+        $serch = "SELECT {$target} FROM {$this -> tablename} WHERE (name = {$user -> name} OR id = {$user -> id});";
+        $result = $this -> pdo -> query($serch);
+        $data = $result -> fetchALL();
+        var_dump($data);
+        return $data;
+    }
+
+    public function Detect_Avoid(\opDB\OperateUserData\Userdata $user){
+        $target = "id";
+        $duplicate = $this -> Serch($user,$target);
+        if($duplicate){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
 }
  
 /**
@@ -202,6 +225,8 @@ namespace opDB\OperateUserData;
     class Userdata{
         public $id;
         
+        public $password;
+
         public $name;
         
         public array $textdata;
@@ -211,13 +236,29 @@ namespace opDB\OperateUserData;
          * @param mixed $name　ユーザー名
          * @param array $textdata　データベース登録用のデータ配列
          */
-        public function __construct($id,$name){
+        public function __construct($id,$password,$name){
             $this -> id = $id;
+            $this -> password = $password;
             $this -> name = $name;  
         } 
         
         public function Molddata(){
             $this -> textdata['name'] = $this -> name;
+            $this -> textdata["password"] = $this -> password;
+        }
+
+        public function getID(\opDB\OperateDB\pdoparams $pdoparams){
+            $pdo = $pdoparams -> pdo;
+            if(isset($this -> id)){
+                return $this -> id;
+            }else{
+                $select = "SELECT id,password FROM {$pdoparams -> tablename} WHERE name = '{$this -> name}';";
+                $result = $pdo -> query($select);
+                if($result){
+                    $data = $result -> fetchALL();
+                    return $data;
+                }
+            }
         }
     }
     
@@ -240,8 +281,8 @@ namespace opDB\OperateUserData;
          * @see \opDB\OperateUserData\Imagehundler::setTemp()
          * @see \opDB\OperateUserData\Imagehundler::get_data()
          */
-        public function __construct($id, $name,array $textdata = NULL, $file = NULL){
-            parent::__construct($id, $name);
+        public function __construct($id,$password,$name,array $textdata = NULL, $file = NULL){
+            parent::__construct($id,$password,$name);
             $this -> textdata = $textdata;
             if($file){
                 $this -> file = $file;
@@ -267,7 +308,7 @@ namespace opDB\OperateUserData;
                     $this -> textdata[$key] = $value;
                 }
             }
-           // $this -> textdata['id'] = $this -> id;
+            $this -> textdata['id'] = $this -> id;
         }
 
     }

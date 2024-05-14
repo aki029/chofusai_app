@@ -99,24 +99,28 @@
 
     require_once "operateDB.php";//DB操作オブジェクト生成用ファイル
     //DB操作用連想配列生成
-    $colparams = [];
+    $colparams = ['id'=>"INT(5) ZEROFILL PRIMARY KEY"];
     foreach($params as $col){
         $colparams = array_merge($colparams,$col['col']);
     }
 
-    $usercolumns = ['name'=>'varchar(255) not null unique key'];
-    
+    $usercolumns = ['name'=>'varchar(255) not null unique key',
+    "password" => "varchar(20) not null"];
+
+    $str = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPUQRSTUVWXYZ';
     //ページ出力操作
     $page_flag = 0;
     if(!empty($_POST["btn_confirm"])){
         $page_flag = 1;
         
+        $userpass = substr(str_shuffle($str),0,10);
         unset($_POST["btn_confirm"]);  //unset value of submit-button
         $id = isset($_SESSION['id']) ? $_SESSION['id'] : null;
-        $user = new \opDB\OperateUserData\InputOfUser($id,$_POST[$nametag],$_POST,$_FILES);
-        $userbasic = new \opDB\OperateUserData\Userdata($id,$_POST[$nametag]);
+        $user = new \opDB\OperateUserData\InputOfUser($id,NULL,$_POST[$nametag],$_POST,$_FILES);
+        $userbasic = new \opDB\OperateUserData\Userdata($id,$userpass,$_POST[$nametag]);
     }elseif(!empty($_POST["btn_submit"])){
         $page_flag = 2;
+
         $user = unserialize($_SESSION["user"]);
         $opdb = unserialize($_SESSION["opdb"]);
         $opdb -> connectDB();
@@ -131,12 +135,13 @@
         unset($_SESSION['useropdb']);
         $useropdb -> mktable();
 
-        //$id = $useropdb -> registDB($userbasic);
-        //var_dump($id);
+        $id = $useropdb -> registDB($userbasic);
         
-        $user -> id = 1;
+        foreach($id as $key => $value){
+            $user -> $key = $value;
+        }
+        
         $result = $opdb -> registDB($user);
-        echo $result;
         
     }
 ?>
