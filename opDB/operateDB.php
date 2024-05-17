@@ -124,12 +124,20 @@ class pdoparams{
         }
         if($user -> file)$user -> SaveImage();
         $user -> Molddata();
-        if($this -> Detect_Avoid($user)){$params = null;
+        if($this -> Detect_Avoid($user)){
             $regist = "INSERT INTO {$this -> tablename} ({$columns}) VALUES ({$params});";
             $prepared = $this -> pdo -> prepare($regist);
             $prepared -> execute($user -> textdata);
         }else{
-            $regist = "UPDATE {$this -> tablename} ({$columns})";
+            $regist = "UPDATE {$this -> tablename} SET ";
+            foreach($keys as $key){
+                $regist .= "{$key} = :{$key}";
+                if(next($keys)){
+                    $regist .= ",";
+                }
+            }
+            $regist .= "WHERE id = {$user -> id};";
+            echo 'false';
         }
 
         //ID get and return
@@ -138,10 +146,9 @@ class pdoparams{
     }
 
     public function Serch(\opDB\OperateUserData\Userdata $user,$target){
-        $serch = "SELECT {$target} FROM {$this -> tablename} WHERE (name = {$user -> name} OR id = {$user -> id});";
+        $serch = "SELECT $target FROM Users WHERE name = '{$user -> name}';";
         $result = $this -> pdo -> query($serch);
         $data = $result -> fetchALL();
-        var_dump($data);
         return $data;
     }
 
