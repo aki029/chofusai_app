@@ -136,11 +136,11 @@
         $useropdb -> mktable();
 
         $id = $useropdb -> registDB($userbasic);
-        
+        var_dump($id);
         foreach($id as $key => $value){
             $user -> $key = $value;
         }
-        
+        var_dump($user);
         $result = $opdb -> registDB($user);
         
     }
@@ -197,8 +197,8 @@
                         <input type="submit" name="btn_confirm" class="OK" value="決定"/>
                     <?php elseif($page_flag===1):?>
                         <?php 
-                            $opdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,$tablename,$colparams); 
-                            $useropdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,'Users',$usercolumns);
+                            $opdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,$tablename,$nametag,$colparams); 
+                            $useropdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,'Users','name',$usercolumns);
                             $_SESSION["user"] = serialize($user);
                             $_SESSION["opdb"] = serialize($opdb);
                             $_SESSION['useropdb'] = serialize($useropdb);

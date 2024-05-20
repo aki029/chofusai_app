@@ -43,6 +43,7 @@ class pdoparams{
     public array $colparams;//テーブルを作成する際に使う。(column)
     public array $querys;//SQLクエリ    
     public $tablename; //SQL文実行で使うテーブル名
+    public $nametag; //SQL文で使うネームカラム名
 
     /**
      * データベース操作オブジェクトの初期化を行います。
@@ -58,12 +59,13 @@ class pdoparams{
      *
      *  $colparams = ["id" => INT PRIMARY KEY AUTO_INCREMENT,"name" => VARCHAR(20)]
      */
-    public function __construct($dsn,$user,$password,$tablename,array $colparams=NULL) {
+    public function __construct($dsn,$user,$password,$tablename,$nametag,array $colparams=NULL) {
         $this -> dsn = $dsn;
         $this -> user = $user;
         $this -> password = $password;
         $this -> tablename = $tablename;
         $this ->colparams = $colparams;
+        $this -> nametag = $nametag;
     }
     
     /**
@@ -129,36 +131,27 @@ class pdoparams{
             $prepared = $this -> pdo -> prepare($regist);
             $prepared -> execute($user -> textdata);
         }else{
-            $regist = "UPDATE {$this -> tablename} SET ";
-            foreach($keys as $key){
-                $regist .= "{$key} = :{$key}";
-                if(next($keys)){
-                    $regist .= ",";
-                }
-            }
-            $regist .= "WHERE id = {$user -> id};";
-            echo 'false';
+            return false;
         }
-
         //ID get and return
         $id = $user -> getID($this);
-        return $id[0];
+        return $id;
     }
 
     public function Serch(\opDB\OperateUserData\Userdata $user,$target){
-        $serch = "SELECT $target FROM Users WHERE name = '{$user -> name}';";
+        $serch = "SELECT {$target} FROM {$this->tablename} WHERE {$this->nametag} = '{$user -> name}';";
         $result = $this -> pdo -> query($serch);
         $data = $result -> fetchALL();
         return $data;
     }
 
-    public function Detect_Avoid(\opDB\OperateUserData\Userdata $user){
+    public function Detect_Avoid(\opDB\OperateUserData\Userdata $user):bool{
         $target = "id";
         $duplicate = $this -> Serch($user,$target);
-        if($duplicate){
-            return false;
-        }else{
+        if($duplicate[0] == null){
             return true;
+        }else{
+            return false;
         }
     }
 
@@ -255,16 +248,11 @@ namespace opDB\OperateUserData;
         }
 
         public function getID(\opDB\OperateDB\pdoparams $pdoparams){
-            $pdo = $pdoparams -> pdo;
             if(isset($this -> id)){
                 return $this -> id;
             }else{
-                $select = "SELECT id,password FROM {$pdoparams -> tablename} WHERE name = '{$this -> name}';";
-                $result = $pdo -> query($select);
-                if($result){
-                    $data = $result -> fetchALL();
-                    return $data;
-                }
+                $result = $pdoparams -> Serch($this,"id");
+                return $result;
             }
         }
     }
