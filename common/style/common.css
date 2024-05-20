@@ -143,6 +143,10 @@ header .header .menu .nav ul li a.app-login:hover{
     border-bottom: 2px solid #000000;
 }
 
+header .header .menu .nav ul li a.logined{
+    font-weight: 800;
+}
+
 /*以下ハンバーガー*/
 
 header .header .hamburgur-menu{
@@ -396,6 +400,7 @@ article{
     display: flex;
     justify-content: center;
     min-width: 300px;
+    height: 100%;
 }
 
 /*ここからサイドバー*/

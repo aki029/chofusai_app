@@ -24,8 +24,10 @@
                             <li><a href="/app/apply/club/registcb.php" class="app-regist-club">サークルイベント申請<span>Event&Booth</span></a></li>
                             <li><a href="/app/apply/market/registmk.php" class="app-regist-market">フリーマーケット申請<span>Market</span></a></li>
                             <li>
-                                <a href="/app/user/login.php" class="app-login">ログイン</a>
-                                <?php if(isset($_SESSION["id"])):?><a class="logined" href="/user/mypage/">マイページへ</a><?php endif?>
+                                <?php if(!isset($_SESSION["id"])):?>
+                                    <a href="/app/user/login.php" class="app-login">ログイン</a>
+                                <?php else:?>    
+                                    <a class="logined" href="/user/mypage/">マイページへ</a><?php endif?>
                             </li>
                         </ul>
                     </nav>

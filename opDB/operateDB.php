@@ -116,22 +116,31 @@ class pdoparams{
         $columns = null;
         $params = null;
         $keys = array_keys($this -> colparams);
-        foreach($keys as $key){
-            $params .= ":{$key}";
-            $columns .= "{$key}";
-            if(next($keys)){
-                $params .= ",";
-                $columns .= ",";
-            }
-        }
         if($user -> file)$user -> SaveImage();
         $user -> Molddata();
         if($this -> Detect_Avoid($user)){
+            foreach($keys as $key){
+                $params .= ":{$key}";
+                $columns .= "{$key}";
+                if(next($keys)){
+                    $params .= ",";
+                    $columns .= ",";
+                }
+            }
             $regist = "INSERT INTO {$this -> tablename} ({$columns}) VALUES ({$params});";
             $prepared = $this -> pdo -> prepare($regist);
             $prepared -> execute($user -> textdata);
         }else{
-            return false;
+            $regist = "UPDATE {$this -> tablename} SET ";
+            foreach($keys as $key){
+                $regist .= "{$key} = :{$key}";
+                if(next($keys)){
+                    $regist .= ",";
+                }
+            }
+            $regist .= " WHERE id = '{$user -> id}'";
+            $prepared = $this -> pdo -> prepare($regist);
+            $prepared -> execute($user -> textdata);
         }
         //ID get and return
         $id = $user -> getID($this);
@@ -139,7 +148,7 @@ class pdoparams{
     }
 
     public function Serch(\opDB\OperateUserData\Userdata $user,$target){
-        $serch = "SELECT {$target} FROM {$this->tablename} WHERE {$this->nametag} = '{$user -> name}';";
+        $serch = "SELECT {$target} FROM {$this->tablename} WHERE {$this->nametag} = '{$user -> name}' OR id = '{$user -> id}';";
         $result = $this -> pdo -> query($serch);
         $data = $result -> fetchALL();
         return $data;
@@ -148,7 +157,7 @@ class pdoparams{
     public function Detect_Avoid(\opDB\OperateUserData\Userdata $user):bool{
         $target = "id";
         $duplicate = $this -> Serch($user,$target);
-        if($duplicate[0] == null){
+        if(!$duplicate[0]){
             return true;
         }else{
             return false;
@@ -248,12 +257,8 @@ namespace opDB\OperateUserData;
         }
 
         public function getID(\opDB\OperateDB\pdoparams $pdoparams){
-            if(isset($this -> id)){
-                return $this -> id;
-            }else{
-                $result = $pdoparams -> Serch($this,"id");
-                return $result;
-            }
+            $result = $pdoparams -> Serch($this,"id");
+            return $result;
         }
     }
     
