@@ -19,13 +19,13 @@ public class MailSender {
 		
 		// プロパティファイルから認証に使用するデータを取得
 		Properties prop = new Properties();
-		prop.load(new FileReader("src/setting/mail.properties"));
+		prop.load(new FileReader("/virtual/chofusai/public_html/app/items/src/setting/mail.properties"));
 		
 		// 送信元のGmailアドレス
 		final String username = prop.getProperty("mailaddress");
 		// Gmailのアカウントのアプリパスワード
 		final String password = prop.getProperty("password");
-
+		System.out.println(password);
 		// SMTPサーバへの認証とメールセッションの作成 
 		// ※メールセッション = メールの送信に関するパラメータや設定を保持
 		Session session = Session.getInstance(prop, new Authenticator() {
@@ -40,11 +40,11 @@ public class MailSender {
 			// 送信元の設定
 			message.setFrom(new InternetAddress(username));
 			// 送信先の設定
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(username));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(args[0]));
 			// 件名の設定
-			message.setSubject("JavaMail Test");
+			message.setSubject("申請受理のお知らせ");
 			// 本文の設定
-			message.setText("This is a test email sent from JavaMail.");
+			message.setText(args[1] + "申請の受付を完了しました。ユーザーIDとパスワードはこちらです。\nユーザーID：" + args[2] + "\nパスワード：" + args[3]);
 
 			// メールの送信
 			Transport.send(message);

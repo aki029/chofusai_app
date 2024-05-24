@@ -1,12 +1,12 @@
 <?php
- /**
-         * 本スクリプトを使う際には以下の名前のパラメータを用意してください。
-         * $nametag ユーザー名を表す連想配列のキー名
-         * $imgstyle 入力内容によって画像サイズを変える際は条件式とともに指定
-         * $params フォームの入力欄生成とデータベースの操作に使用
-         * htmlキーとcolキーで指定すること。
-         * $tablename 作成するテーブル名
-         */
+    /**
+     * 本スクリプトを使う際には以下の名前のパラメータを用意してください。
+     * $nametag ユーザー名を表す連想配列のキー名
+     * $imgstyle 入力内容によって画像サイズを変える際は条件式とともに指定
+     * $params フォームの入力欄生成とデータベースの操作に使用
+     * htmlキーとcolキーで指定すること。
+     * $tablename 作成するテーブル名
+    */
         
     session_start();
     require_once "operateDB.php";//DB操作オブジェクト生成用ファイル
@@ -31,7 +31,7 @@
         unset($_POST["btn_confirm"]);  //unset value of submit-button
         $id = isset($_SESSION['id']) ? $_SESSION['id'] : null;
         $user = new \opDB\OperateUserData\InputOfUser($id,NULL,$_POST[$nametag],$_POST,$_FILES);
-        $userbasic = new \opDB\OperateUserData\Userdata($id,$userpass,$_POST[$nametag]);
+        $userbasic = new \opDB\OperateUserData\Userdata($id,$userpass,$_POST[$nametag]);     
     }elseif(!empty($_POST["btn_submit"])){
         //順を追って手続きしていれば処理、再読み込み等をすると最初から
         if($_SESSION["clear"]){
@@ -54,12 +54,18 @@
 
             //パスワードの上書を回避
             $userpass = $useropdb -> Serch($userbasic,"password")[0]["password"];
+            if($userpass)
             $userbasic -> password = $userpass;
 
             $id = $useropdb -> registDB($userbasic)[0]["id"];
             $user -> id = $id;
             $_SESSION["id"] = $id;
             $result = $opdb -> registDB($user);
+
+            //メール送信
+            $kindarray = ["sponsor"=>"協賛","club"=>"模擬店・イベント","market"=>"外部団体用イベント"];
+            $sendmail = "java -classpath ../../items/ MailSender ".$user -> textdata["email"]." ".$kindarray[$kind]." ".$userbasic -> id." ".$userbasic ->password;
+            shell_exec("export LANG=C.UTF-8;".$sendmail);
         }
         
     }

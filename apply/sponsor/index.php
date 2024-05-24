@@ -11,11 +11,11 @@
                     'type'=>'text',
                     'required'=>'required']]],
                     'col'=>['comname'=>'varchar(255) NOT NULL']],
-                    '電話番号'=>[
-                        'html'=>['input1'=>['input'=>[
-                            'type'=>'tel',
-                'placeholder'=>'ハイフン無し',
-                'required'=>'required']]],
+            '電話番号'=>[
+                'html'=>['input1'=>['input'=>[
+                    'type'=>'tel',
+                    'placeholder'=>'ハイフン無し',
+                    'required'=>'required']]],
                 'col'=>['tel'=>'char(11) NOT NULL UNIQUE KEY']],
             '郵便番号'=>[
                 'html'=>['input1'=>['input'=>[
