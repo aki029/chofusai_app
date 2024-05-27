@@ -1,5 +1,5 @@
 <?php
-    $nametag = "clubname";
+    $nametag = "eventname";
 
     $imgstyle = "width:148px;height:100px;";
 
@@ -12,7 +12,7 @@
             "html"=>["input1"=>["input"=>[
                 "type"=>"text",
                 "required"=>"required"]]],
-            "col"=>["clubname"=>"varchar(255) NOT NULL"]
+            "col"=>["eventname"=>"varchar(255) NOT NULL"]
         ],
         "電話番号"=>[
             "html"=>["input1"=>["input"=>[
@@ -20,19 +20,19 @@
                 "required"=>"required"]]],
             "col"=>["tel"=>"char(11) NOT NULL UNIQUE KEY"]
         ],
-        '出展種類'=>[
+        '団体種類'=>[
             'html'=>[
                 'input1'=>[
-                    'label'=>'模擬店',
+                    'label'=>'学内団体',
                     'input'=>[
                         'type'=>'radio',
-                        'value'=>'模擬店',
+                        'value'=>'学内団体',
                         'required'=>'required']],
                 'input2'=>[
-                    'label'=>'イベント',
+                    'label'=>'学外団体',
                     'input'=>[
                         'type'=>'radio',
-                        'value'=>'イベント',
+                        'value'=>'学外団体',
                         'required'=>'required']]],
             'col'=>['kind'=>'varchar(10)']
         ],
@@ -54,6 +54,6 @@
         ]
     ];
     $year = date('Y');
-    $kind = 'club';
+    $kind = 'event';
     $tablename = $year.$kind;
     require '../opDB/registDB.php';

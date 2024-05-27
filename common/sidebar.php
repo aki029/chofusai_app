@@ -10,7 +10,9 @@
                     "user"=>"ユーザー",
                     'login'=>'ログイン',
                     "info"=>"ご案内",
-                    "club"=>"模擬店・イベント申請",
+                    "event"=>"イベント",
+                    "mypage"=>"マイページ",
+                    "market"=>"模擬店",
                     "sponsor"=>"協賛のお申込み"];
                     $docroot = $_SERVER["DOCUMENT_ROOT"];
                     $dirs = str_replace($docroot,"",dirname($_SERVER["PHP_SELF"]));

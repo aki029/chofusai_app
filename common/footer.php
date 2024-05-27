@@ -14,8 +14,8 @@
                             <p>各種申請</p>
                             <ul>
                                 <li><a href="/app/apply/sponsor/">ご協賛の申請</a></li>
-                                <li><a href="/app/apply/club/">イベント・模擬店申請</a></li>
-                                <li><a href="/app/apply/market/">外部団体様用申請</a></li>
+                                <li><a href="/app/apply/event/">イベント申請</a></li>
+                                <li><a href="/app/apply/market/">模擬店申請</a></li>
                             </ul>
                         </li> 
                         <li>
@@ -23,8 +23,8 @@
                             <ul>
                                 <li><a href="/app/info/"><?=date("Y")?>年度概要</a></li>
                                 <li><a href="/app/info/sponsor/">協賛会社様一覧</a></li>
-                                <li><a href="/app/info/club/">イベント・模擬店一覧</a></li>                        
-                                <li><a href="/app/info/market/">外部団体様イベント・模擬店一覧</a></li>
+                                <li><a href="/app/info/event/">イベント一覧</a></li>                        
+                                <li><a href="/app/info/market/">模擬店一覧</a></li>
                             </ul>
                         </li>
                         <li>
