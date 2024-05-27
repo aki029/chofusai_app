@@ -7,8 +7,10 @@
      * htmlキーとcolキーで指定すること。
      * $tablename 作成するテーブル名
     */
-        
     session_start();
+    //ini_set('display_errors',1);
+    $kindarray = ["sponsor"=>"協賛","club"=>"模擬店・イベント","market"=>"外部団体用イベント"];//メール送信とページタイトルに使用
+
     require_once "operateDB.php";//DB操作オブジェクト生成用ファイル
     //DB操作用連想配列生成
     $colparams = ['id'=>"INT(5) ZEROFILL PRIMARY KEY"];
@@ -17,9 +19,9 @@
     }
 
     $usercolumns = ['name'=>'varchar(255) not null unique key',
-    "password" => "varchar(20) not null"];
-
-    $str = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPUQRSTUVWXYZ';
+    "password" => "text not null"];
+    //パスワード格納用変数
+    $userpass = null;
     //ページ出力操作
     $page_flag = 0;
     if(!empty($_POST["btn_confirm"])){
@@ -27,16 +29,15 @@
         
         $_SESSION["clear"] = true;
         $useropdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,'Users','name',$usercolumns);
-        $userpass = substr(str_shuffle($str),0,10);
         unset($_POST["btn_confirm"]);  //unset value of submit-button
         $id = isset($_SESSION['id']) ? $_SESSION['id'] : null;
         $user = new \opDB\OperateUserData\InputOfUser($id,NULL,$_POST[$nametag],$_POST,$_FILES);
-        $userbasic = new \opDB\OperateUserData\Userdata($id,$userpass,$_POST[$nametag]);     
+        $userbasic = new \opDB\OperateUserData\Userdata($id,null,$_POST[$nametag]);     
     }elseif(!empty($_POST["btn_submit"])){
         //順を追って手続きしていれば処理、再読み込み等をすると最初から
         if($_SESSION["clear"]){
             $page_flag = 2;
-
+            
             unset($_SESSION["clear"]);
             $user = unserialize($_SESSION["user"]);
             $opdb = unserialize($_SESSION["opdb"]);
@@ -44,8 +45,10 @@
             unset($_SESSION["user"]);
             unset($_SESSION["opdb"]);
             $opdb -> mktable();
-
+            
             $userbasic = unserialize($_SESSION['userbasic']);
+            $userpass = substr(bin2hex(random_bytes(7)),0,5);
+            $userbasic -> password = password_hash($userpass,PASSWORD_DEFAULT);
             $useropdb = unserialize($_SESSION['useropdb']);
             $useropdb -> connectDB();
             unset($_SESSION['userbasic']);
@@ -53,9 +56,14 @@
             $useropdb -> mktable();
 
             //パスワードの上書を回避
+            $tmppass = $userpass;
             $userpass = $useropdb -> Serch($userbasic,"password")[0]["password"];
-            if($userpass)
-            $userbasic -> password = $userpass;
+            if($userpass){
+                $userbasic -> password = password_hash($userpass,PASSWORD_DEFAULT);
+                $userpass = '既に登録済みです。';
+            }else{
+                $userpass = $tmppass;
+            }
 
             $id = $useropdb -> registDB($userbasic)[0]["id"];
             $user -> id = $id;
@@ -63,11 +71,9 @@
             $result = $opdb -> registDB($user);
 
             //メール送信
-            $kindarray = ["sponsor"=>"協賛","club"=>"模擬店・イベント","market"=>"外部団体用イベント"];
-            $sendmail = "java -classpath ../../items/ MailSender ".$user -> textdata["email"]." ".$kindarray[$kind]." ".$userbasic -> id." ".$userbasic ->password;
+            $sendmail = "java -classpath ../../items/javax.mail.jar:../../items/javax.activation.jar:../../items/ MailSender ".$user -> textdata["email"]." ".$kindarray[$kind]." ".$userbasic -> id." ".$userpass;
             shell_exec("export LANG=C.UTF-8;".$sendmail);
         }
-        
     }
 ?>
 
@@ -75,15 +81,15 @@
     <!--insert title-->
     <script>
         var title = document.createElement('title');
-        title.innerHTML = '協賛申請フォーム';
+        title.innerHTML = '<?=$kindarray[$kind]?>申請フォーム';
         var head = document.getElementsByTagName('head')[0];
         head.appendChild(title);
-        </script>
+    </script>
     <article>
         <?php require_once 'sidebar.php';?>
         <main class="contents">
-            <div class="sponsorform inputform">
-                <h1>協賛申請フォーム</h1>
+            <div class="inputform">
+                <h1><?=$kindarray[$kind]?>申請フォーム</h1>
                 <form method="POST" enctype="multipart/form-data">
                     <?php
                     $opdb = null;
@@ -113,6 +119,7 @@
                         }elseif($page_flag == 1){
                             $array_key = array_keys($mold['col']);
                             if(!$_POST[$array_key[0]])$html.="</p><img src=".$user->tmppath[$array_key[0]].' style='.$imgstyle.">";
+                            if(preg_match('|\d{4}\-\d{1,2}\-\d{1,2}T\d{1,2}\:\d{1,2}|',$_POST[$array_key[0]]))$html.=date('Y年n月j日 H:i',strtotime($_POST[$array_key[0]])).'</p>';//正規表現でタイムスタンプ検知、年月日表示に変換
                             else $html .= $_POST[$array_key[0]]."</p>";
                             echo $html;
                         }
@@ -133,8 +140,9 @@
                     <?php elseif($page_flag===2):?>
                     <div class="endregist">
                         <p>正常に登録されました</p>
+                        <p>ご登録のメールアドレスにユーザーIDとパスワードを送信いたしました。</p>
                         <p>ユーザーid : <?= $_SESSION["id"] ?></p>
-                        <p>パスワード : <?= $useropdb -> Serch($userbasic,"password")[0]["password"]?></p>
+                        <p>パスワード : <?= $userpass?></p>
                         <a class="tomypage" href="/app/user/">マイページへ</a>
                     </div>
                     <?php endif;?>

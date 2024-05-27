@@ -8,6 +8,7 @@
                     $place_name = ["app"=>"HOME",
                     "apply"=>"各種申請",
                     "user"=>"ユーザー",
+                    'login'=>'ログイン',
                     "info"=>"ご案内",
                     "club"=>"模擬店・イベント申請",
                     "sponsor"=>"協賛のお申込み"];

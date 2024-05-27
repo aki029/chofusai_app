@@ -25,7 +25,6 @@ public class MailSender {
 		final String username = prop.getProperty("mailaddress");
 		// Gmailのアカウントのアプリパスワード
 		final String password = prop.getProperty("password");
-		System.out.println(password);
 		// SMTPサーバへの認証とメールセッションの作成 
 		// ※メールセッション = メールの送信に関するパラメータや設定を保持
 		Session session = Session.getInstance(prop, new Authenticator() {

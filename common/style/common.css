@@ -109,7 +109,7 @@ header .header .menu .nav ul li a span{
     font-weight: bold;
 }
 
-header .header .menu .nav ul li a:not(a.app-login):after{
+header .header .menu .nav ul li a:not(a.app-login,a.logined):after{
     position: absolute;
     content: "";
     bottom: 0;
@@ -123,7 +123,7 @@ header .header .menu .nav ul li a:not(a.app-login):after{
     transform-origin: center top;
 }
 
-header .header .menu .nav ul li a:not(a.app-login):hover::after{
+header .header .menu .nav ul li a:not(a.app-login,a.logined):hover::after{
     transform: scale(1,1);
 }
 
@@ -136,6 +136,14 @@ header .header .menu .nav ul li a.app-login{
     background-color: #ff9500;
     border-bottom: 4px solid #00000045;
     box-shadow: 2px 4px 6px #000000;
+}
+
+header .header .menu .nav ul li a.logined{
+    padding: 20px 30px;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 20vw;
+    background-color: #ff9500;
 }
 
 header .header .menu .nav ul li a.app-login:hover{
@@ -227,6 +235,7 @@ header .header .hamburgur-menu .nav > ul{
     padding: 0;
     margin: 0;
     overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 header .header .hamburgur-menu .nav > ul li a{
@@ -400,7 +409,7 @@ article{
     display: flex;
     justify-content: center;
     min-width: 300px;
-    height: 100%;
+    height: auto;
 }
 
 /*ここからサイドバー*/
@@ -480,10 +489,12 @@ footer{
     font-size: min(2.7vw,15px);
     margin-top: 20px;
     background-color: #61caff;
+    position: sticky;
     display: flex;
     flex-flow: column;
     min-width: 300px;
     width: 100%;
+    top:100vh;
 }
 footer div.footernav{
     color: #ffffff;
