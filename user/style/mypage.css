@@ -1,11 +1,51 @@
 div.log{
     min-height: 250px;
     border: 10px #ff8636 solid;
-    width: 50vw;
+    width: max(300px,30vw);
 }
 
 div.log > p:first-child{
     margin: 0;
     margin-bottom: 5px;
+    color: aliceblue;
+    background-color: #ff8636;
+    text-align: center;
 }
 
+div.log > p:first-child::after{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 4px;
+    background-color: #0000002f;
+}
+
+div.RegistedContents > div.tab_wrap {
+    margin: 20px 0;
+    margin-bottom: 0;
+}
+
+div.RegistedContents > div.tab_wrap > input{
+    display: none;
+}
+
+div.RegistedContents > div.tab_wrap > label{
+    padding: 10px 30px;
+}
+
+div.RegistedContents > div.tab_wrap > label:not(.tab_sp){
+    margin-left: -10px;
+}
+
+div.RegistedContents > div.tab_wrap > input + label{
+    background-color: #ff8636;
+}
+
+/*div.RegistedContents > div.tab_wrap > input:checked + label{
+    background-color: #ff8636;
+}*/
+
+div.RegistedContents > div.ShowList{
+    border: #ff8636 solid 10px;
+    min-height: 100px;
+}

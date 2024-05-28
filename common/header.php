@@ -63,7 +63,10 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="/app/user/login">ログイン</a>
+                                <?php if(!isset($_SESSION["id"])):?>
+                                    <a href="/app/user/login" >ログイン</a>
+                                <?php else:?>    
+                                    <a href="/app/user/mypage/">マイページへ</a><?php endif?>
                             </li>
                         </ul>
                     </nav>

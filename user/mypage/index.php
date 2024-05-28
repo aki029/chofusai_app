@@ -49,12 +49,12 @@
             </div>
             <div class="RegistedContents">
                 <div class="tab_wrap">
-                    <input id="sponsor" type='radio' name="check" checked>
                     <label for="sponsor" class="tab_sp tabs">協賛</label>
-                    <input id="event" type='radio' name="check">
+                    <input id="sponsor" type='radio' name="check" checked>
                     <label for="event" class="tab_club tabs">イベント</label>
-                    <input id="market" type="radio" name="check">
+                    <input id="event" type='radio' name="check">
                     <label for="market" class="tab_market tabs">模擬店</label>
+                    <input id="market" type="radio" name="check">
                 </div>
                 <div class="ShowList">
                     <div class="sponsor">
@@ -86,12 +86,15 @@
             $params = ["id"=>"ユーザーID"];
             $params += $kindparams;
 
-            $detected = "|.*\/.*\/.*\/.*|";//正規表現　画像パスを検知
+            $detectpath = "|.*\/.*\/.*\/.*|";//正規表現　画像パスを検知
+            $detectTime = '|\d{4}\-\d{1,2}\-\d{1,2} \d{1,2}\:\d{1,2}|';
             foreach($result as $key => $row){
-                if(preg_match($detected,$row)){
+                if(preg_match($detectpath,$row)){
                     $row = str_replace("./","",$row);
                     $path = "/app/apply/{$kind}/$row";
-                    $html .= "<img src='{$path}' style='{$imgstyle}'>";
+                    $html .= "<p>".$params[$key]."：</p><img src='{$path}' style='{$imgstyle}'>";
+                }elseif(preg_match($detectTime,$row)){
+                    $html.="<p>".$params[$key]."：".date('Y年n月j日 H:i',strtotime($row))."</p>";    
                 }else{
                     $html .= "<p>".$params[$key]."：".htmlspecialchars($row)."</p>";
                 }
