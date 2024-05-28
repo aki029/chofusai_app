@@ -45,7 +45,7 @@
     <main>
         <div class="mypage">
             <div class="log">
-
+                <p>アクセスログ</p>
             </div>
             <div class="RegistedContents">
                 <div class="tab_wrap">

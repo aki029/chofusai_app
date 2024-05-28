@@ -1,0 +1,11 @@
+div.log{
+    min-height: 250px;
+    border: 10px #ff8636 solid;
+    width: 50vw;
+}
+
+div.log > p:first-child{
+    margin: 0;
+    margin-bottom: 5px;
+}
+

@@ -15,7 +15,7 @@
                 <div class="title">
                     <a href="/app/">
                         <img src="/app/common/image/header/chofusai_logo.svg" alt="潮風祭総合ポータルサイト">
-                        <span>潮風祭総合ポータルサイト</span>
+                        <span>総合ポータルサイト</span>
                     </a>
                 </div>
                 <div class="menu">
