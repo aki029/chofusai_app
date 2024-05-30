@@ -1,7 +1,9 @@
 import java.io.FileReader;
 import java.util.Properties;
 
+import java.nio.file.Path;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.io.FileNotFoundException;
 import javax.mail.MessagingException;
 
@@ -19,7 +21,11 @@ public class MailSender {
 		
 		// プロパティファイルから認証に使用するデータを取得
 		Properties prop = new Properties();
-		prop.load(new FileReader("/virtual/chofusai/public_html/app/items/src/setting/mail.properties"));
+		Path p = Paths.get("");
+		Path abs_p = p.toAbsolutePath();
+		String path = abs_p.toString()+"/src/setting/mail.properties";
+		System.out.println(path);
+		prop.load(new FileReader(abs_p.toString() +"/src/setting/mail.properties"));
 		
 		// 送信元のGmailアドレス
 		final String username = prop.getProperty("mailaddress");
