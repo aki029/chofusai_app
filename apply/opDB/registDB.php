@@ -5,11 +5,14 @@
      * $imgstyle 入力内容によって画像サイズを変える際は条件式とともに指定
      * $params フォームの入力欄生成とデータベースの操作に使用
      * htmlキーとcolキーで指定すること。
+     * 形式：$params = [title=>
+     * 'html'=>[input(number)=>[tagname=>[attribute=>value]]]
+     * 'col'=>['name'=>'explain']],...]
      * $tablename 作成するテーブル名
     */
     session_start();
-    //ini_set('display_errors',1);
-    $kindarray = ["sponsor"=>"協賛","club"=>"模擬店・イベント","market"=>"外部団体用イベント"];//メール送信とページタイトルに使用
+    ini_set('display_errors',1);
+    $kindarray = ["sponsor"=>"協賛","event"=>"イベント","market"=>"模擬店"];//メール送信とページタイトルに使用
 
     require_once "operateDB.php";//DB操作オブジェクト生成用ファイル
     //DB操作用連想配列生成
@@ -24,6 +27,20 @@
     $userpass = null;
     //ページ出力操作
     $page_flag = 0;
+
+    //ログイン状態で入力欄にあらかじめ値を入れるための変数
+    $connection;
+    if(!empty($_SESSION['id'])){
+        try{
+            $opdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,$tablename,$nametag,[]);
+            $user = new \opDB\OperateUserData\Userdata($_SESSION['id'],null,null);
+            $opdb -> connectDB();
+            $data = $opdb->Serch($user,'*')[0];
+            $connection = true;
+        }catch(PDOException){
+            $connection = false;
+        }
+    }
     if(!empty($_POST["btn_confirm"])){
         $page_flag = 1;
         
@@ -108,6 +125,10 @@
                                         $html .= "<{$tag}";
                                         foreach($attrs as $name => $value){
                                             $html .= ' '.$name.'="'.$value.'"';
+                                        }
+                                        //ログイン状態では過去のデータから値を入力済みにする
+                                        if(!empty($_SESSION['id'])&&$connection){
+                                            $html .= ' value="'.$data[array_keys($mold['col'])[0]].'"';
                                         }
                                         $html .= " name=".array_keys($mold['col'])[0].">";
                                     }

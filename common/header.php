@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="/app/common/style/common.css" type="text/css">
         <link rel="stylesheet" href="/app/apply/style/input.css">
         <link rel="stylesheet" href="/app/user/style/mypage.css">
+        <script src="/app/common/js/common.js"></script>
     </head>
     <body>
         <header>

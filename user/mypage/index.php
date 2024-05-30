@@ -1,10 +1,10 @@
 <?php
     session_start();
-    ini_set("display_errors", 1);
+    //ini_set("display_errors", 1);
     require_once 'operateDB.php';
 
     if(!isset($_SESSION["id"])){
-        header("Location: login/index.php");
+        header("Location: ../login/index.php");
         exit();
     }
 
@@ -49,12 +49,12 @@
             </div>
             <div class="RegistedContents">
                 <div class="tab_wrap">
-                    <label for="sponsor" class="tab_sp tabs">協賛</label>
                     <input id="sponsor" type='radio' name="check" checked>
-                    <label for="event" class="tab_club tabs">イベント</label>
+                    <label for="sponsor" class="tab_sp tabs">協賛</label>
                     <input id="event" type='radio' name="check">
-                    <label for="market" class="tab_market tabs">模擬店</label>
+                    <label for="event" class="tab_club tabs">イベント</label>
                     <input id="market" type="radio" name="check">
+                    <label for="market" class="tab_market tabs">模擬店</label>
                 </div>
                 <div class="ShowList">
                     <div class="sponsor">
@@ -62,16 +62,17 @@
                             Display_data($spopdb,$user,$spparams,$sp,$imgstyle);
                         ?>
                     </div>
-                    <div class="event" style="display:none">
+                    <div class="event">
                         <?php
                             Display_data($eventopdb,$user,$eventparams,$event,$imgstyle);
                         ?>
                     </div>
-                    <div class="market" style="display:none;">
+                    <div class="market">
                         <?php
                             Display_data($marketopdb,$user,$eventparams,$market,$imgstyle);
                         ?>
                     </div>
+                    <button id="editdata">内容を変更する</button>
                 </div>
             </div>
         </div>
@@ -87,7 +88,7 @@
             $params += $kindparams;
 
             $detectpath = "|.*\/.*\/.*\/.*|";//正規表現　画像パスを検知
-            $detectTime = '|\d{4}\-\d{1,2}\-\d{1,2} \d{1,2}\:\d{1,2}|';
+            $detectTime = '|\d{4}\-\d{1,2}\-\d{1,2} \d{1,2}\:\d{1,2}|';//正規表現　タイムスタンプを検知
             foreach($result as $key => $row){
                 if(preg_match($detectpath,$row)){
                     $row = str_replace("./","",$row);

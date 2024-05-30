@@ -1,7 +1,8 @@
 div.log{
     min-height: 250px;
-    border: 10px #ff8636 solid;
-    width: max(300px,30vw);
+    border: 10px #ff8636 ridge;
+    width: max(370px,30vw);
+    margin-top: 30px;
 }
 
 div.log > p:first-child{
@@ -20,9 +21,15 @@ div.log > p:first-child::after{
     background-color: #0000002f;
 }
 
+div.RegistedContents{
+    margin: 0 10px;
+}
+
 div.RegistedContents > div.tab_wrap {
     margin: 20px 0;
     margin-bottom: 0;
+    display: flex;
+    justify-content: flex-start;
 }
 
 div.RegistedContents > div.tab_wrap > input{
@@ -31,21 +38,35 @@ div.RegistedContents > div.tab_wrap > input{
 
 div.RegistedContents > div.tab_wrap > label{
     padding: 10px 30px;
-}
-
-div.RegistedContents > div.tab_wrap > label:not(.tab_sp){
-    margin-left: -10px;
-}
-
-div.RegistedContents > div.tab_wrap > input + label{
     background-color: #ff8636;
+    display: inline-block;
+    width: max-content;
+    text-align: center;
 }
 
-/*div.RegistedContents > div.tab_wrap > input:checked + label{
-    background-color: #ff8636;
-}*/
+div.RegistedContents > div.tab_wrap > input:not(:checked) + label{
+    background-color: #ffe1a9;
+    box-shadow: inset 2px 2px 4px #000000;
+}
 
 div.RegistedContents > div.ShowList{
     border: #ff8636 solid 10px;
-    min-height: 100px;
+    background-color: #ff8636;
+}
+
+div.RegistedContents > div.ShowList > div{
+    display: none;
+    padding: 0px 5px;
+    background-color: #fff;
+}
+
+div.RegistedContents > div.ShowList > div.showing{
+    display: block;
+}
+
+div.RegistedContents > div.ShowList > button#editdata{
+    display: inline-block;
+    padding: 10px;
+    background-color: #ffffff;
+    border: ridge 5px #000;
 }
