@@ -8,7 +8,7 @@
         exit();
     }
 
-    $year = date("Y");
+    $year = $_POST["year"] ? $_POST["year"]:date("Y");
     $sp = "sponsor";
     $event = "event";
     $market = "market";
@@ -28,6 +28,10 @@
     //表示用連想配列
     $spparams = ["email"=>"メールアドレス","comname"=>"会社名","tel"=>"電話番号","zip"=>"郵便番号","adress"=>"住所","adressnum"=>"番地・建物名","cash"=>"金額","transway"=>"受け渡し方法","transferdate"=>"受け渡し日時","adfile"=>"広告ファイル","comurl"=>"会社ホームページURL"];
     $eventparams = ["email"=>"メールアドレス","eventname"=>"団体名","tel"=>"電話番号","kind"=>"団体種類","imagefile"=>"イメージ画像","exhibitname"=>"出展名"];
+
+    //当該年度に過去のデータを適用するための変数群
+    $data;
+    $user_data = new \opDB\OperateUserData\InputOfUser($_SESSION["id"],null,null)
 ?>
 
 <?php require_once 'header.php';?>
@@ -57,6 +61,16 @@
                     <label for="market" class="tab_market tabs">模擬店</label>
                 </div>
                 <div class="ShowList">
+                    <select id="year" name="year">
+                        <option>
+                            --閲覧する年度を選んでください--
+                        </option>
+                        <?php 
+                            for($i=2023;$i<=date("Y");$i++){
+                                echo "<option value='".$i."'>".$i."</option>";
+                            }
+                        ?>
+                    </select>
                     <div class="sponsor">
                         <?php
                             Display_data($spopdb,$user,$spparams,$sp,$imgstyle);
@@ -73,6 +87,7 @@
                         ?>
                     </div>
                     <button id="editdata">内容を変更する</button>
+                    <button type="submit" id="applydata" name="btn_confirm">内容を反映する</button>
                 </div>
             </div>
         </div>
@@ -84,6 +99,11 @@
         $html = "";
         try{
             $result = $opdb -> Serch($user,"*")[0];
+            //過去データ適用用のデータ成形
+            $data = $result;
+            unset($data["id"]);
+
+
             $params = ["id"=>"ユーザーID"];
             $params += $kindparams;
 

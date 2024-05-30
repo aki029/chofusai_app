@@ -95,6 +95,8 @@
 ?>
 
     <?php require_once "header.php";?>
+
+                        <?=var_dump($user->textdata)?>
     <!--insert title-->
     <script>
         var title = document.createElement('title');
@@ -139,7 +141,7 @@
                             echo $html;   
                         }elseif($page_flag == 1){
                             $array_key = array_keys($mold['col']);
-                            if(!$_POST[$array_key[0]])$html.="</p><img src=".$user->tmppath[$array_key[0]].' style='.$imgstyle.">";
+                            if($_FILES[$array_key[0]])$html.="</p><img src=".$user->tmppath[$array_key[0]].' style='.$imgstyle.">";
                             if(preg_match('|\d{4}\-\d{1,2}\-\d{1,2}T\d{1,2}\:\d{1,2}|',$_POST[$array_key[0]]))$html.=date('Y年n月j日 H:i',strtotime($_POST[$array_key[0]])).'</p>';//正規表現でタイムスタンプ検知、年月日表示に変換
                             else $html .= $_POST[$array_key[0]]."</p>";
                             echo $html;
