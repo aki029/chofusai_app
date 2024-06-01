@@ -31,7 +31,7 @@
 
     //当該年度に過去のデータを適用するための変数群
     $data;
-    $user_data = new \opDB\OperateUserData\InputOfUser($_SESSION["id"],null,null)
+    $user_data = new \opDB\OperateUserData\InputOfUser($_SESSION["id"],null,null,[]);
 ?>
 
 <?php require_once 'header.php';?>
@@ -61,12 +61,9 @@
                     <label for="market" class="tab_market tabs">模擬店</label>
                 </div>
                 <div class="ShowList">
-                    <select id="year" name="year">
-                        <option>
-                            --閲覧する年度を選んでください--
-                        </option>
+                    <select id="year" name="year" <?=date('Y')?>>
                         <?php 
-                            for($i=2023;$i<=date("Y");$i++){
+                            for($i=date('Y');$i>=2024;$i--){
                                 echo "<option value='".$i."'>".$i."</option>";
                             }
                         ?>
@@ -87,7 +84,7 @@
                         ?>
                     </div>
                     <button id="editdata">内容を変更する</button>
-                    <button type="submit" id="applydata" name="btn_confirm">内容を反映する</button>
+                    <button id="applydata" name="btn_submit">内容を反映する</button>
                 </div>
             </div>
         </div>

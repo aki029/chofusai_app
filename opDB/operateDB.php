@@ -116,7 +116,7 @@ class pdoparams{
         $columns = null;
         $params = null;
         $keys = array_keys($this -> colparams);
-        if($user -> file)$user -> SaveImage();
+        if($user -> tmppath)$user -> SaveImage();
         $user -> Molddata();
         if($this -> Detect_Avoid($user)){
             foreach($keys as $key){
@@ -148,7 +148,7 @@ class pdoparams{
     }
 
     public function Serch(\opDB\OperateUserData\Userdata $user,$target){
-        $serch = "SELECT {$target} FROM {$this->tablename} WHERE {$this->nametag} = '{$user -> name}' OR id = '{$user -> id}';";
+        $serch = "SELECT {$target} FROM {$this->tablename} WHERE id = '{$user -> id}' OR {$this->nametag} = '{$user -> name}';";
         $result = $this -> pdo -> query($serch);
         $data = $result -> fetchALL();
         return $data;
@@ -297,8 +297,8 @@ namespace opDB\OperateUserData;
          */
         public function Molddata(array $data = NULL){
             //ファイルに関するデータの成型
-            if(isset($this -> file)){
-            $keys = array_keys($this -> file);
+            if(isset($this -> tmppath)){
+            $keys = array_keys($this -> tmppath);
             foreach($keys as $key){
                 $this -> textdata[$key] = $this -> filepath[$key];
             }}

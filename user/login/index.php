@@ -20,8 +20,11 @@
             $err_msg = 'IDまたはパスワードが異なります。';
             $err=true;
         }
+    }elseif(isset($_SESSION['id'])){
+        header('Location:../mypage/');
     }
-?>
+    
+?> 
 <?php require_once 'header.php';?>
     <script>
         var title = document.createElement('title');
