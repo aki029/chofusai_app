@@ -63,7 +63,7 @@
                 <div class="ShowList">
                     <select id="year" name="year" <?=date('Y')?>>
                         <?php 
-                            for($i=date('Y');$i>=2024;$i--){
+                            for($i=date('Y');$i>=2023;$i--){
                                 echo "<option value='".$i."'>".$i."</option>";
                             }
                         ?>
@@ -85,6 +85,18 @@
                     </div>
                     <button id="editdata">内容を変更する</button>
                     <button id="applydata" name="btn_submit">内容を反映する</button>
+                </div>
+                <div class="bill">
+                    <p>請求書発行はこちらから</p>
+                    <p>↓↓↓</p>
+                    <button id='bill'>請求書を発行する</button>
+                    <div class="bill_input">
+                        <select id="kind">対象の申請種類を選んでください
+                            <option value="sponsor">協賛</option>
+                            <option value="event">イベント</option>
+                            <option value="market">模擬店</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

@@ -37,7 +37,6 @@ $('button#applydata').on('click',function(event){
                 'year':year,
             },
             success:function(content){
-                console.log(content)
                 url = '../../apply/'+classname+"/";
                 $.ajax({
                     type:'POST',
@@ -46,8 +45,8 @@ $('button#applydata').on('click',function(event){
                         'btn_submit':'yes',
                     },
                     success:function(contents){
-                        console.log(contents)
                         alert('登録に成功しました');
+                        window.location.reload;
                     }
                 })
             }
@@ -72,3 +71,7 @@ function display_data(e){
         }
     })
 }
+
+$('button#bill').on('click',function(){
+    
+})

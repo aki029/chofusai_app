@@ -489,7 +489,6 @@ footer{
     font-size: min(2.7vw,15px);
     margin-top: 20px;
     background-color: #61caff;
-    position: sticky;
     display: flex;
     flex-flow: column;
     min-width: 300px;

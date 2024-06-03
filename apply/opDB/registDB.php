@@ -11,7 +11,7 @@
      * $tablename 作成するテーブル名
     */
     session_start();
-    ini_set('display_errors',1);
+    //ini_set('display_errors',1);
     $kindarray = ["sponsor"=>"協賛","event"=>"イベント","market"=>"模擬店"];//メール送信とページタイトルに使用
 
     require_once "operateDB.php";//DB操作オブジェクト生成用ファイル
@@ -28,7 +28,6 @@
     //ページ出力操作
     $page_flag = 0;
 
-    var_dump($_SESSION);
     //ログイン状態で入力欄にあらかじめ値を入れるための変数
     $connection;
     if(empty($_POST['btn_confirm']&&empty($_POST['btn_submit'])))
@@ -50,10 +49,10 @@
         $id = isset($_SESSION['id']) ? $_SESSION['id'] : null;
         $user = new \opDB\OperateUserData\InputOfUser($id,NULL,$_POST[$nametag],$_POST,$_FILES);
         $userbasic = new \opDB\OperateUserData\Userdata($id,null,$_POST[$nametag]);     
+        $_SESSION['clear'] = true;
     }elseif(!empty($_POST["btn_submit"])){
         //順を追って手続きしていれば処理、再読み込み等をすると最初から
         if($_SESSION["clear"]){
-            echo 'This is page 3';
             $page_flag = 2;
             
             unset($_SESSION["clear"]);
@@ -163,7 +162,7 @@
                         <p>ご登録のメールアドレスにユーザーIDとパスワードを送信いたしました。</p>
                         <p>ユーザーid : <?= $_SESSION["id"] ?></p>
                         <p>パスワード : <?= $userpass?></p>
-                        <a class="tomypage" href="/app/user/">マイページへ</a>
+                        <a class="tomypage" href="/app/user/mypage">マイページへ</a>
                     </div>
                     <?php endif;?>
                 </form>

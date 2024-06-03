@@ -65,11 +65,30 @@ div.RegistedContents > div.ShowList > div.showing{
     display: block;
 }
 
-div.RegistedContents > div.ShowList button{
+div.RegistedContents > div.ShowList > button{
     display: inline-block;
     padding: 10px;
     background-color: #ffffff;
     border: ridge 5px #000;
+    margin:5px auto;
+}
+
+button#bill{
+    display: block;
+    text-decoration: underline;
+    color: #001aff;
+    border: none;
+    background-color: #00000000;
+    font-size: 1em;
+    margin:  auto;
+}
+button#bill:hover{
+    cursor: pointer;
+}
+
+div.bill{
+    text-align: center;
+
 }
 
 div.RegistedContents > div.ShowList > select{
