@@ -72,6 +72,11 @@
                         <?php
                             Display_data($spopdb,$user,$spparams,$sp,$imgstyle);
                         ?>
+                        <div class="bill">
+                            <p>請求書発行はこちらから</p>
+                            <p>↓↓↓</p>
+                            <button id='bill'>請求書を発行する</button>
+                        </div>
                     </div>
                     <div class="event">
                         <?php
@@ -86,18 +91,7 @@
                     <button id="editdata">内容を変更する</button>
                     <button id="applydata" name="btn_submit">内容を反映する</button>
                 </div>
-                <div class="bill">
-                    <p>請求書発行はこちらから</p>
-                    <p>↓↓↓</p>
-                    <button id='bill'>請求書を発行する</button>
-                    <div class="bill_input">
-                        <select id="kind">対象の申請種類を選んでください
-                            <option value="sponsor">協賛</option>
-                            <option value="event">イベント</option>
-                            <option value="market">模擬店</option>
-                        </select>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </main>
