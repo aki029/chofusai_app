@@ -3,17 +3,28 @@
     ini_set('display_errors',1);
     require_once 'operateDB.php';
 
+    function login_log($id){
+        $filepath = "../log/{$id}.log";
+        $address = $_SERVER["REMOTE_ADDR"];
+        $message = date('Y-m-d H:i:s')."\t".$address."\t"."からログインしました";
+        if(!file_exists("../log/"))
+        mkdir("../log/");   
+        if(file_exists($filepath))file_put_contents($filepath,$message."\n",FILE_APPEND);
+        else file_put_contents($filepath,$message."\n");
+    }
+
     $err=false;
     $err_msg = null;
     if(!empty($_POST['btn_login'])){
         $opdb = new \opDB\OperateDB\pdoparams(CHOFUDB_DSN,CHOFUDB_USER,CHOFUDB_PW,'Users','name',[]);
         $id = $_POST['token_1'];
-        $pass = $_POST['token_2'];
+        $pass = $_POST['token_2']; 
         $tmpuser = new \opDB\OperateUserData\Userdata($id,$pass,null);
         $opdb->connectDB();
         $result = $opdb->Serch($tmpuser,'id,password')[0];
         if($_POST['token_1']==$result['id']&&password_verify($_POST['token_2'],$result['password'])||$_POST['token_2']==$result['password']){
             $_SESSION['id'] = $_POST['token_1'];
+            login_log($id);
             header('Location:../mypage/');
             exit();
         }else{

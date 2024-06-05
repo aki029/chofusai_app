@@ -1,7 +1,9 @@
 <?php
     session_start();
-    //ini_set("display_errors", 1);
+    ini_set("display_errors", 1);
     require_once 'operateDB.php';
+
+    if($_POST["logout"])unset($_SESSION["id"]);
 
     if(!isset($_SESSION["id"])){
         header("Location: ../login/index.php");
@@ -54,6 +56,10 @@
             </div>
             <div class="log">
                 <p>アクセスログ</p>
+                <?php
+                    $log = file_get_contents("../log/{$_SESSION['id']}.log");
+                    var_dump($log);
+                ?>
             </div>
             <div class="RegistedContents">
                 <div class="tab_wrap">
@@ -90,6 +96,9 @@
                     <button id="editdata">内容を変更する</button>
                     <button id="applydata" name="btn_submit">内容を反映する</button>
                 </div>
+            </div>
+            <div class="logout">
+                <button id="logout">ログアウト</button>
             </div>
         </div>
     </main>

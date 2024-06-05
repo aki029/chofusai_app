@@ -94,3 +94,12 @@ div.bill{
 div.RegistedContents > div.ShowList > select{
     width: 20vw;
 }
+
+div.ChangePass{
+    text-align: center;
+}
+
+div.logout{
+    text-align: center;
+    margin: 15px 0 10px 0;
+}

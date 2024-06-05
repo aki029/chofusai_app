@@ -93,7 +93,7 @@ $("button#changepass_btn").on('click',function Detect_and_changepass(){
                         success:function(contents){
                             console.log(contents);
                             alert('パスワードの変更に成功しました');
-                            window.location.reload;
+                            window.location.href = window.location.href;
                         }
                     })
                 }else{
@@ -106,5 +106,20 @@ $("button#changepass_btn").on('click',function Detect_and_changepass(){
             }
         },
     })
-        
+});
+
+$("button#logout").on('click',function(){
+    var agree = confirm('ログアウトします');
+    if(agree){
+        $.ajax({
+            type:'POST',
+            url:'./index.php',
+            data:{
+                "logout":"yes",
+            },
+            success:function(contents){
+                window.location.href = window.location.href;
+            }
+        })
+    }
 });
