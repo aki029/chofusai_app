@@ -48,6 +48,10 @@
     <?php require_once 'sidebar.php';?>
     <main>
         <div class="mypage">
+            <div class="ChangePass">
+                <p>パスワード変更はこのボタンでできます</p>
+                <button id="changepass_btn">パスワードを変更する</button>
+            </div>
             <div class="log">
                 <p>アクセスログ</p>
             </div>
@@ -72,11 +76,6 @@
                         <?php
                             Display_data($spopdb,$user,$spparams,$sp,$imgstyle);
                         ?>
-                        <div class="bill">
-                            <p>請求書発行はこちらから</p>
-                            <p>↓↓↓</p>
-                            <button id='bill'>請求書を発行する</button>
-                        </div>
                     </div>
                     <div class="event">
                         <?php
@@ -91,7 +90,6 @@
                     <button id="editdata">内容を変更する</button>
                     <button id="applydata" name="btn_submit">内容を反映する</button>
                 </div>
-                
             </div>
         </div>
     </main>

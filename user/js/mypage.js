@@ -72,6 +72,39 @@ function display_data(e){
     })
 }
 
-$('button#bill').on('click',function(){
-    
-})
+$("button#changepass_btn").on('click',function Detect_and_changepass(){
+    var oldpass = prompt("現在のパスワードを入力してください");
+    if(oldpass)
+    $.ajax({
+        type:'POST',
+        url:'./matchpass.php',
+        data:{'oldpass':oldpass},
+        success:function Changepass(contents){
+            console.log(contents);
+            if(contents == "true"){
+                var newpass = prompt("新しいパスワードを入力してください");
+                if(!newpass)return;
+                var newpass2 = prompt("新しいパスワードをもう一度入力してください");
+                if(newpass == newpass2){
+                    $.ajax({
+                        type:'POST',
+                        url:'./changepass.php',
+                        data:{'newpass':newpass},
+                        success:function(contents){
+                            console.log(contents);
+                            alert('パスワードの変更に成功しました');
+                            window.location.reload;
+                        }
+                    })
+                }else{
+                    alert('パスワードの変更に失敗しました');
+                    Changepass();
+                }
+            }else{
+                alert('パスワードが間違っています');
+                Detect_and_changepass();
+            }
+        },
+    })
+        
+});

@@ -190,7 +190,7 @@ header .header > .hamburgur-menu label span{
 }
 
 /*ハンバーガークリック時の挙動用css*/
-html.hamburgered div:not(div.header){
+html.hamburgered > :not(header){
     opacity: 0.5;
 }
 /*ハンバーガーアニメーション*/
