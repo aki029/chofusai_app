@@ -189,7 +189,10 @@ header .header > .hamburgur-menu label span{
     transition-property: all;
 }
 
-
+/*ハンバーガークリック時の挙動用css*/
+html.hamburgered div:not(div.header){
+    opacity: 0.5;
+}
 /*ハンバーガーアニメーション*/
 header .header > .hamburgur-menu input#toggle:checked+
 label span:nth-of-type(2){
