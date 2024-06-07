@@ -1,10 +1,10 @@
 window.onload = function(){
     $("input#toggle").on("click",function(){
-        $("html").toggleClass('hamburgered');
+        $("body").toggleClass('hamburgured');
     })
     $(document).on("click",function(event){
         if(!$(event.target).closest("div.hamburgur-menu").length){
-            $("html").removeClass('hamburgered');
+            $("body").removeClass('hamburgured');
             $("input#toggle").prop('checked',false);
             console.log('clicked');
         }

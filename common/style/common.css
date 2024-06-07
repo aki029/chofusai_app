@@ -190,9 +190,16 @@ header .header > .hamburgur-menu label span{
 }
 
 /*ハンバーガークリック時の挙動用css*/
-html.hamburgered > :not(header){
-    opacity: 0.5;
+body.hamburgured *{
+    background: #00000059;
+    border: none;
 }
+body.hamburgured header{
+    
+}
+
+
+
 /*ハンバーガーアニメーション*/
 header .header > .hamburgur-menu input#toggle:checked+
 label span:nth-of-type(2){
@@ -228,7 +235,7 @@ header .header > .hamburgur-menu .nav{
 }
 
 header .header > .hamburgur-menu input#toggle:checked~.nav{
-    width: 15em;
+    width: 50vw;
 }
 
 header .header .hamburgur-menu .nav > ul{
@@ -238,7 +245,6 @@ header .header .hamburgur-menu .nav > ul{
     padding: 0;
     margin: 0;
     overflow-x: hidden;
-    overflow-y: scroll;
 }
 
 header .header .hamburgur-menu .nav > ul li a{
