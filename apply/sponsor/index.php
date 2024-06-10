@@ -64,10 +64,11 @@
                 'html'=>['input1'=>['input'=>[
                     'type'=>'datetime-local']]],
                 'col'=>['transferdate'=>'DATETIME']],
-            '広告ファイル'=>[
+            '広告ファイル<br>※.png,.jpgファイルのみ受け付けます'=>[
                 'html'=>['input1'=>['input'=>[
                     'type'=>'file',
-                    'class'=>'adfile']]],
+                    'class'=>'adfile',
+                    'accept'=>'image/png,image/jpeg']]],
                 'col'=>['adfile'=>'text']],
             '会社ホームページURL'=>[
                 'html'=>['input1'=>['input'=>[

@@ -25,8 +25,11 @@
         if($_POST['token_1']==$result['id']&&password_verify($_POST['token_2'],$result['password'])||$_POST['token_2']==$result['password']){
             $_SESSION['id'] = $_POST['token_1'];
             login_log($id);
-            header('Location:../mypage/');
-            exit();
+            if($_POST['token_1'] == 00000)
+                header('Location:../admin/');
+            else
+                header('Location:../mypage/');
+        exit();
         }else{
             $err_msg = 'IDまたはパスワードが異なります。';
             $err=true;

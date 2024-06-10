@@ -148,7 +148,9 @@ class pdoparams{
     }
 
     public function Serch(\opDB\OperateUserData\Userdata $user,$target){
-        $serch = "SELECT {$target} FROM {$this->tablename} WHERE id = '{$user -> id}' OR {$this->nametag} = '{$user -> name}';";
+        $serch = "SELECT {$target} FROM {$this->tablename} ";
+        if($user -> id != '*')$serch .= "WHERE id = '{$user -> id}' OR {$this->nametag} = '{$user -> name}'";
+        $serch .= ";";
         $result = $this -> pdo -> query($serch);
         $data = $result -> fetchALL();
         return $data;

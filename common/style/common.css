@@ -190,12 +190,12 @@ header .header > .hamburgur-menu label span{
 }
 
 /*ハンバーガークリック時の挙動用css*/
-body.hamburgured *{
-    background: #00000059;
-    border: none;
+body.hamburgured >*:not(header){
+    opacity: 0.15;
 }
 body.hamburgured header{
-    
+    opacity: 1;  
+    z-index: 9999; 
 }
 
 

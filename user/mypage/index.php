@@ -9,6 +9,10 @@
         header("Location: ../login/index.php");
         exit();
     }
+    if($_SESSION['id'] == 00000){
+        header('Location:../admin/');
+        exit();
+    }
 
     $year = $_POST["year"] ? $_POST["year"]:date("Y");
     $sp = "sponsor";
@@ -25,7 +29,6 @@
 
     $user = new \opDB\OperateUserData\Userdata($_SESSION["id"],null,null);
 
-    $page_flag = 0;
     $imgstyle = "width:148px;height:100px;";
     //表示用連想配列
     $spparams = ["email"=>"メールアドレス","comname"=>"会社名","tel"=>"電話番号","zip"=>"郵便番号","adress"=>"住所","adressnum"=>"番地・建物名","cash"=>"金額","transway"=>"受け渡し方法","transferdate"=>"受け渡し日時","adfile"=>"広告ファイル","comurl"=>"会社ホームページURL"];
@@ -56,10 +59,14 @@
             </div>
             <div class="log">
                 <p>アクセスログ</p>
+                <div class="log_value">
                 <?php
                     $log = file_get_contents("../log/{$_SESSION['id']}.log");
-                    var_dump($log);
+                    $log = explode("\n",$log);
+                    foreach($log as $value)
+                    echo '<p>'.$value.'</p>';
                 ?>
+                </div>
             </div>
             <div class="RegistedContents">
                 <div class="tab_wrap">
@@ -71,7 +78,7 @@
                     <label for="market" class="tab_market tabs">模擬店</label>
                 </div>
                 <div class="ShowList">
-                    <select id="year" name="year" <?=date('Y')?>>
+                    <select id="year" name="year">
                         <?php 
                             for($i=date('Y');$i>=2023;$i--){
                                 echo "<option value='".$i."'>".$i."</option>";

@@ -22,6 +22,10 @@ div.log > p:first-child::after{
     background-color: #0000002f;
 }
 
+div.log > div.log_value > p{
+    font-size: max(1vw,11px);
+}
+
 div.RegistedContents{
     margin: 0 10px;
 }

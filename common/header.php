@@ -58,7 +58,7 @@
                             <li>
                                 <a href="/app/apply/">各種申請</a>
                                 <ul>
-                                    <li><a href="/app/apply/sponser/">協賛申請</a></li>
+                                    <li><a href="/app/apply/sponsor/">協賛申請</a></li>
                                     <li><a href="/app/apply/event/">イベント申請</a></li>
                                     <li><a href="/app/apply/market/">模擬店申請</a></li>
                                 </ul>
@@ -84,7 +84,7 @@
                                 <ul>
                                     <li><a href="/app/info/event/">イベント・模擬店</a></li>
                                     <li><a href="/app/info/market/">外部団体様出展</a></li>
-                                    <li><a href="/app/info/sponser/">協賛会社様一覧</a></li>
+                                    <li><a href="/app/info/sponsor/">協賛会社様一覧</a></li>
                                 </ul>
                             </div>
                         </li>
