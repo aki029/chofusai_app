@@ -13,7 +13,8 @@
                     "event"=>"イベント",
                     "mypage"=>"マイページ",
                     "market"=>"模擬店",
-                    "sponsor"=>"協賛のお申込み"];
+                    "sponsor"=>"協賛",
+                    "contact"=>"お問い合わせ"];
                     $docroot = $_SERVER["DOCUMENT_ROOT"];
                     $dirs = str_replace($docroot,"",dirname($_SERVER["PHP_SELF"]));
                     $visited = explode("/",$dirs);
