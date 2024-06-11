@@ -7,6 +7,8 @@
         <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
         <link rel="stylesheet" href="/app/common/style/common.css" type="text/css">
         <link rel="stylesheet" href="/app/apply/style/input.css">
+        <link rel="stylesheet" href="/app/user/style/mypage.css">
+        <script src="/app/common/js/common.js"></script>
     </head>
     <body>
         <header>
@@ -14,18 +16,20 @@
                 <div class="title">
                     <a href="/app/">
                         <img src="/app/common/image/header/chofusai_logo.svg" alt="潮風祭総合ポータルサイト">
-                        <span>潮風祭総合ポータルサイト</span>
+                        <span>総合ポータルサイト</span>
                     </a>
                 </div>
                 <div class="menu">
                     <nav class="nav">
                         <ul>
-                            <li><a href="/app/apply/sponsor/registsp.php" class="app-regist-sponsor">協賛申請<span>Sponsor</span></a></li>
-                            <li><a href="/app/apply/club/registcb.php" class="app-regist-club">サークルイベント申請<span>Event&Booth</span></a></li>
-                            <li><a href="/app/apply/market/registmk.php" class="app-regist-market">フリーマーケット申請<span>Market</span></a></li>
+                            <li><a href="/app/apply/sponsor/" class="app-regist-sponsor">協賛申請<span>Sponsor</span></a></li>
+                            <li><a href="/app/apply/event/" class="app-regist-event">イベント申請<span>Event&Booth</span></a></li>
+                            <li><a href="/app/apply/market/" class="app-regist-market">模擬店申請<span>Market</span></a></li>
                             <li>
-                                <a href="/app/user/login.php" class="app-login">ログイン</a>
-                                <?php if(isset($_SESSION["id"])):?><a class="logined" href="/user/mypage/">マイページへ</a><?php endif?>
+                                <?php if(!isset($_SESSION["id"])):?>
+                                    <a href="/app/user/login" class="app-login">ログイン</a>
+                                <?php else:?>    
+                                    <a class="logined" href="/app/user/mypage/">マイページへ</a><?php endif?>
                             </li>
                         </ul>
                     </nav>
@@ -46,22 +50,24 @@
                             <li>
                                 <a href="/app/info/">開催情報</a>
                                 <ul>
-                                    <li><a href="/app/info/event/">イベント</a></li>
-                                    <li><a href="/app/info/booth/">模擬店</a></li>
-                                    <li><a href="/app/info/market/">フリーマーケット</a></li>
+                                    <li><a href="/app/info/event/">イベント出店</a></li>
+                                    <li><a href="/app/info/market/">模擬店出展</a></li>
                                     <li><a href="/app/info/sponsor/">協賛会社様一覧</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="/app/apply/">各種申請</a>
                                 <ul>
-                                    <li><a href="/app/apply/sponser/registsp.php">協賛</a></li>
-                                    <li><a href="/app/apply/club/">イベント・模擬店</a></li>
-                                    <li><a href="/app/apply/market/">フリーマーケット</a></li>
+                                    <li><a href="/app/apply/sponsor/">協賛申請</a></li>
+                                    <li><a href="/app/apply/event/">イベント申請</a></li>
+                                    <li><a href="/app/apply/market/">模擬店申請</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="/app/user/">ログイン</a>
+                                <?php if(!isset($_SESSION["id"])):?>
+                                    <a href="/app/user/login" >ログイン</a>
+                                <?php else:?>    
+                                    <a href="/app/user/mypage/">マイページへ</a><?php endif?>
                             </li>
                         </ul>
                     </nav>
@@ -76,9 +82,9 @@
                             <a href="/app/info/">開催情報</a>
                             <div class="accordion">
                                 <ul>
-                                    <li><a href="/app/info/club/">イベント・模擬店</a></li>
-                                    <li><a href="/app/info/market/">フリーマーケット</a></li>
-                                    <li><a href="/app/info/sponser/">協賛会社様一覧</a></li>
+                                    <li><a href="/app/info/event/">イベント・模擬店</a></li>
+                                    <li><a href="/app/info/market/">外部団体様出展</a></li>
+                                    <li><a href="/app/info/sponsor/">協賛会社様一覧</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -87,8 +93,8 @@
                             <div class="accordion">
                                 <ul>
                                     <li><a href="/app/apply/sponsor/">協賛のお申込み</a></li>
-                                    <li><a href="/app/apply/club/">模擬店・イベントお申込み</a></li>
-                                    <li><a href="/app/apply/market/">フリーマーケットのお申込み</a></li>
+                                    <li><a href="/app/apply/event/">イベントお申込み</a></li>
+                                    <li><a href="/app/apply/market/">模擬店お申込み</a></li>
                                 </ul>
                             </div>
                         </li>

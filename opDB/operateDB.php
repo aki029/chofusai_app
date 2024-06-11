@@ -9,13 +9,18 @@ namespace opDB;
  */
 define("CHOFUDB_NAME","chofusai");
 /**
- * @var $user always means "root"
+ * @var $user always means "chofusai"
  */
-define("CHOFUDB_USER","root");
+define("CHOFUDB_USER","chofusai");
 /**
  * @var $dsn database source name
  */
 define("CHOFUDB_DSN","mysql:host=localhost;dbname=".CHOFUDB_NAME.";charset=utf8");
+
+/**
+ * @var $password always means "M207chofu"
+ */
+define("CHOFUDB_PW","M207chofu");
 
 /**
  * データベース操作オブジェクトを格納した名前空間です。
@@ -29,123 +34,139 @@ namespace opDB\OperateDB;
  * PDOobjectと接続用パラメータ、テーブルカラムの詳細を格納した配列と実行クエリ、テーブル名をメンバとして持ちます。
  * PDOobjectと接続用パラメータはインスタンス生成時とシリアライズを解除した時に使われます。
  */
-class OperateDB{
+class pdoparams{
 
-        protected $pdo;//データベース操作用オブジェクト
+    public $pdo;
 
-        protected $dsn,$user,$password;//接続用パラメータ
+    public $dsn,$user,$password;//接続用パラメータ
 
-        public array $colparams;//テーブルを作成する際に使う。(column)
-        public array $querys;//SQLクエリ    
-        public $tablename; //SQL文実行で使うテーブル名
-        
-        public function __sleep() {
-            return ["dsn","user","password","querys","tablename"];
+    public array $colparams;//テーブルを作成する際に使う。(column)
+    public array $querys;//SQLクエリ    
+    public $tablename; //SQL文実行で使うテーブル名
+    public $nametag; //SQL文で使うネームカラム名
+
+    /**
+     * データベース操作オブジェクトの初期化を行います。
+     * @param string $dsn Databese Source Name.
+     * @param string $user Database User.
+     * @param string|null $password Database Password.
+     * @param string $tablename 本オブジェクトのmktable()メソッドにより作られるテーブルの名前.
+     * @param array|null $colparams 上記メソッドで作られるテーブルのカラム(列)の名前をキー名、その型とその他設定を値とする連想配列.
+     * 
+     * Explain of $colparams
+     * 
+     * テーブルの列名にINT型で主キー、自動加算される"id"と可変長文字列型で全角１０文字以内の"name"という列を作成するとき、$colparamsの中身は以下のようにする必要があります.
+     *
+     *  $colparams = ["id" => INT PRIMARY KEY AUTO_INCREMENT,"name" => VARCHAR(20)]
+     */
+    public function __construct($dsn,$user,$password,$tablename,$nametag,array $colparams=NULL) {
+        $this -> dsn = $dsn;
+        $this -> user = $user;
+        $this -> password = $password;
+        $this -> tablename = $tablename;
+        $this ->colparams = $colparams;
+        $this -> nametag = $nametag;
+    }
+    
+    /**
+     * connect Database with pramas of this object
+     */
+    public function connectDB(){
+        error_reporting(E_ALL);
+        try{
+            $this -> pdo = new \PDO($this -> dsn,$this -> user, $this -> password,[
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+            ]);
+        }catch(\PDOException $e){
+            echo "<p>Faild:" . $e->getMessage() . "</p>";
+            exit("データベースに接続できませんでした");
         }
+    }
 
-        public function __wakeup() {
-            $this -> connectDB();
-        }
-
-        /**
-         * データベース操作オブジェクトの初期化を行います。
-         * @param string $dsn Databese Source Name.
-         * @param string $user Database User.
-         * @param string|null $password Database Password.
-         * @param string $tablename 本オブジェクトのmktable()メソッドにより作られるテーブルの名前.
-         * @param array|null $colparams 上記メソッドで作られるテーブルのカラム(列)の名前をキー名、その型とその他設定を値とする連想配列.
-         * 
-         * Explain of $colparams
-         * 
-         * テーブルの列名にINT型で主キー、自動加算される"id"と可変長文字列型で全角１０文字以内の"name"という列を作成するとき、$colparamsの中身は以下のようにする必要があります.
-         *
-         *  $colparams = ["id" => INT PRIMARY KEY AUTO_INCREMENT,"name" => VARCHAR(20)]
-         */
-        public function __construct($dsn,$user,$password,$tablename,array $colparams=NULL) {
-            $this -> dsn = $dsn;
-            $this -> user = $user;
-            $this -> password = $password;
-            $this -> tablename = $tablename;
-            $this -> connectDB();
-            $this ->colparams = $colparams;
-        }
-
-        public function connectDB() {
-            ini_set("display_errors",1);
-            error_reporting(E_ALL);
-            try{
-                $this -> pdo = new \PDO($this->dsn,$this->user, $this->password,[
-                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
-                ]);
-            }catch(\PDOException $e){
-                echo "<p>Faild:" . $e->getMessage() . "</p>";
-                exit("データベースに接続できませんでした");
+    /**
+     * Create table on the database easily.
+     * This method uses SQL Query:"CREATE TABLE IF NOT EXISTS {$tablename} ({$params:joined strings,the keys of $colparams and its value}) DEFAULT CHARSET=utf8;"
+     * So, if you want to make table more detailed, you should use $pdo:PDOobject in this class, and manually use method contained in it.
+     */
+    public function mktable(){
+        $colparams = !isset($this -> colparams['id']) ? ['id'=>"INT(5) ZEROFILL PRIMARY KEY  AUTO_INCREMENT"] : $this -> colparams;
+        foreach($this -> colparams as $key => $col){$colparams[$key] = $col;}
+        $params = null;
+        foreach($colparams as $key => $value){
+            $params .= $key . " " . $value;
+            if(next($colparams)){
+                $params .= ",";
             }
-
         }
+        $mktable = "CREATE TABLE IF NOT EXISTS {$this -> tablename}({$params}) DEFAULT CHARSET=utf8;";
+        $this -> pdo -> query($mktable);
+    }
 
-        /**
-         * Create and add to colparams with each name of key and option.
-         * @param string $name column name
-         * @param string $option column option
-         */
-        public function makeparams(string $name,string $option) {
-            $this -> colparams[$name] = $option;
-        }
-
-        /**
-         * Create table on the database easily.
-         * This method uses SQL Query:"CREATE TABLE IF NOT EXISTS {$tablename} ({$params:joined strings,the keys of $colparams and its value}) DEFAULT CHARSET=utf8;"
-         * So, if you want to make table more detailed, you should use $pdo:PDOobject in this class, and manually use method contained in it.
-         */
-        public function mktable(){
-            $params = null;
-            foreach($this ->colparams as $key => $value){
-                $params .= $key . " " . $value;
-                if(next($this -> colparams)){
-                    $params .= ",";
-                }
-            }
-            $mktable = "CREATE TABLE IF NOT EXISTS {$this -> tablename}({$params}) DEFAULT CHARSET=utf8;";
-            $this -> pdo -> query($mktable);
-        }
-
-        /**
-         * Registing to database
-         * Insert datas to table made with function: mktable() of this object.
-         * This method uses SQL Query:"INSERT INTO {$tablename} VALUES ({$params:the keys of $colparams});"
-         * If you want to insert datas into table, also you should use pdo.
-         * @param \opDB\OperateUserData\InputOfUser $user contains Userdatas:id,name,posteddata
-         * @see \opDB\OperateUserData\Imagehundler::SaveImage()
-         * @see \opDB\OperateUserData\InputOfUser::Molddata()
-         */
-        public function registDB(\opDB\OperateUserData\Userdata $user) {
-            $params = null;
-            $keys = array_keys($this -> colparams);
+    /**
+     * Registing to database
+     * Insert datas to table made with function: mktable() of this object.
+     * This method uses SQL Query:"INSERT INTO {$tablename} VALUES ({$params:the keys of $colparams});"
+     * If you want to insert datas into table, also you should use pdo.
+     * @param \opDB\OperateUserData\InputOfUser $user contains Userdatas:id,name,posteddata
+     * @see \opDB\OperateUserData\Imagehundler::SaveImage()
+     * @see \opDB\OperateUserData\InputOfUser::Molddata()
+     */
+    public function registDB(\opDB\OperateUserData\Userdata $user) {
+        $columns = null;
+        $params = null;
+        $keys = array_keys($this -> colparams);
+        if($user -> tmppath)$user -> SaveImage();
+        $user -> Molddata();
+        if($this -> Detect_Avoid($user)){
             foreach($keys as $key){
                 $params .= ":{$key}";
+                $columns .= "{$key}";
                 if(next($keys)){
                     $params .= ",";
+                    $columns .= ",";
                 }
             }
-            if($user -> file)$user -> SaveImage();
-            $user -> Molddata();
-            $regist = "INSERT INTO {$this -> tablename} VALUES ({$params});";
+            $regist = "INSERT INTO {$this -> tablename} ({$columns}) VALUES ({$params});";
             $prepared = $this -> pdo -> prepare($regist);
-            $result = $prepared -> execute($user -> textdata);
-            if($result){return $result;}
+            $prepared -> execute($user -> textdata);
+        }else{
+            $regist = "UPDATE {$this -> tablename} SET ";
+            foreach($keys as $key){
+                $regist .= "{$key} = :{$key}";
+                if(next($keys)){
+                    $regist .= ",";
+                }
+            }
+            $regist .= " WHERE id = '{$user -> id}'";
+            $prepared = $this -> pdo -> prepare($regist);
+            $prepared -> execute($user -> textdata);
         }
-
-        /**
-         * 
-         */
-        public function get_userdata(\opDB\OperateUserData\Userdata $user) {
-            $params = null;
-            
-        }
-
+        //ID get and return
+        $id = $user -> getID($this);
+        return $id;
     }
+
+    public function Serch(\opDB\OperateUserData\Userdata $user,$target){
+        $serch = "SELECT {$target} FROM {$this->tablename} ";
+        if($user -> id != '*')$serch .= "WHERE id = '{$user -> id}' OR {$this->nametag} = '{$user -> name}'";
+        $serch .= ";";
+        $result = $this -> pdo -> query($serch);
+        $data = $result -> fetchALL();
+        return $data;
+    }
+
+    public function Detect_Avoid(\opDB\OperateUserData\Userdata $user):bool{
+        $target = "id";
+        $duplicate = $this -> Serch($user,$target);
+        if(!$duplicate[0]){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+}
  
 /**
  * ユーザーデータ管理用オブジェクトを格納した名前空間です。
@@ -182,8 +203,7 @@ namespace opDB\OperateUserData;
                 $result = move_uploaded_file($file[$key]["tmp_name"], $tmp_dir . $filename);
                 if($result){
                     $this -> tmppath[$key] = $tmp_dir . $filename;
-
-                }           
+                }
             }
         }
         
@@ -207,19 +227,6 @@ namespace opDB\OperateUserData;
             }            
         }
 
-        /**
-         * 一次保存された画像ファイルからデータをテキストとして取り出します。
-         * データベース等へ格納する際はバイナリ形式で保存してください。
-         * @return array|string 取得したデータを返します。
-         */
-        public function get_data() :array|string{
-            $result = array();
-            foreach($this -> tmppath as $key => $value){
-                $result[$key] = file_get_contents($value);
-            }
-            return $result;
-        }
-
         public abstract function Molddata();
     }
     
@@ -229,20 +236,32 @@ namespace opDB\OperateUserData;
     class Userdata{
         public $id;
         
+        public $password;
+
         public $name;
         
+        public array $textdata;
         /**
          * ユーザーオブジェクトの初期化を行います。
          * @param mixed $id ユーザーID
          * @param mixed $name　ユーザー名
+         * @param array $textdata　データベース登録用のデータ配列
          */
-        public function __construct($id,$name){
+        public function __construct($id,$password,$name){
             $this -> id = $id;
-            $this -> name = $name;
-            
+            $this -> password = $password;
+            $this -> name = $name;  
+        } 
+        
+        public function Molddata(){
+            $this -> textdata['name'] = $this -> name;
+            $this -> textdata["password"] = $this -> password;
         }
-        
-        
+
+        public function getID(\opDB\OperateDB\pdoparams $pdoparams){
+            $result = $pdoparams -> Serch($this,"id");
+            return $result;
+        }
     }
     
     /**
@@ -250,35 +269,26 @@ namespace opDB\OperateUserData;
      */
     class InputOfUser extends Userdata{
         use Imagehundler;
-        public array $textdata;
         
         public array $file;
-
-        /**
-         * filedataにはアップロードされた画像のテキストデータが保存されますが、現状バイナリ形式でのデータベースへの保存は行いません。
-         * 機能拡張の余地のために残していますが、今後使う予定がなければ削除してかまいません。
-         * @var array $filedata text|binary data of uploaded file
-         * @see \opDB\OperateUserData\Imagehundler::get_data()
-         */
-        public array $filedata;
         
+        public array $textdata;
         /**
          * データ格納オブジェクトの初期化を行います。
          * $textdataには$_POST変数をそのまま代入できます。その場合、作成するデータベースのカラムに応じて送信ボタンのPOSTデータはunsetメソッドを通して削除する必要があります。
          * @param mixed $id user id
          * @param mixed $name user name
-         * @param array $textdata array of posted data
          * @param array $file array of posted file, but in most cases, it may contain only one file
+         * @param array $textdata array of posted data
          * @see \opDB\OperateUserData\Imagehundler::setTemp()
          * @see \opDB\OperateUserData\Imagehundler::get_data()
          */
-        public function __construct($id, $name,array $textdata = NULL, $file = NULL){
-            parent::__construct($id, $name);
+        public function __construct($id,$password,$name,array $textdata = NULL, $file = NULL){
+            parent::__construct($id,$password,$name);
             $this -> textdata = $textdata;
             if($file){
                 $this -> file = $file;
                 $this -> setTemp();
-                $this -> filedata = $this -> get_data();
             }
         }
         
@@ -289,8 +299,8 @@ namespace opDB\OperateUserData;
          */
         public function Molddata(array $data = NULL){
             //ファイルに関するデータの成型
-            if(isset($this -> file)){
-            $keys = array_keys($this -> file);
+            if(isset($this -> tmppath)){
+            $keys = array_keys($this -> tmppath);
             foreach($keys as $key){
                 $this -> textdata[$key] = $this -> filepath[$key];
             }}
@@ -300,8 +310,9 @@ namespace opDB\OperateUserData;
                     $this -> textdata[$key] = $value;
                 }
             }
-            $this -> textdata["id"] = $this -> id;
+            $this -> textdata['id'] = $this -> id;
         }
+
     }
     
     

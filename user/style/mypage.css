@@ -1,0 +1,109 @@
+div.log{
+    min-height: 250px;
+    border: 10px #ff8636 ridge;
+    width: max(350px,30vw);
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+div.log > p:first-child{
+    margin: 0;
+    margin-bottom: 5px;
+    color: aliceblue;
+    background-color: #ff8636;
+    text-align: center;
+}
+
+div.log > p:first-child::after{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 4px;
+    background-color: #0000002f;
+}
+
+div.log > div.log_value > p{
+    font-size: max(1vw,11px);
+}
+
+div.RegistedContents{
+    margin: 0 10px;
+}
+
+div.RegistedContents > div.tab_wrap {
+    margin: 20px 0;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+div.RegistedContents > div.tab_wrap > input{
+    display: none;
+}
+
+div.RegistedContents > div.tab_wrap > label{
+    padding: 10px 30px;
+    background-color: #ff8636;
+    display: inline-block;
+    width: max-content;
+    text-align: center;
+}
+
+div.RegistedContents > div.tab_wrap > input:not(:checked) + label{
+    background-color: #ffe1a9;
+    box-shadow: inset 2px 2px 4px #000000;
+}
+
+div.RegistedContents > div.ShowList{
+    border: #ff8636 solid 10px;
+    background-color: #ff8636;
+}
+
+div.RegistedContents > div.ShowList > div{
+    display: none;
+    padding: 0px 5px;
+    background-color: #fff;
+}
+
+div.RegistedContents > div.ShowList > div.showing{
+    display: block;
+}
+
+div.RegistedContents > div.ShowList > button{
+    display: inline-block;
+    padding: 10px;
+    background-color: #ffffff;
+    border: ridge 5px #000;
+    margin:5px auto;
+}
+
+button#bill{
+    display: block;
+    text-decoration: underline;
+    color: #001aff;
+    border: none;
+    background-color: #00000000;
+    font-size: 1em;
+    margin:  auto;
+}
+button#bill:hover{
+    cursor: pointer;
+}
+
+div.bill{
+    text-align: center;
+
+}
+
+div.RegistedContents > div.ShowList > select{
+    width: 20vw;
+}
+
+div.ChangePass{
+    text-align: center;
+}
+
+div.logout{
+    text-align: center;
+    margin: 15px 0 10px 0;
+}

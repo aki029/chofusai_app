@@ -109,7 +109,7 @@ header .header .menu .nav ul li a span{
     font-weight: bold;
 }
 
-header .header .menu .nav ul li a:not(a.app-login):after{
+header .header .menu .nav ul li a:not(a.app-login,a.logined):after{
     position: absolute;
     content: "";
     bottom: 0;
@@ -123,7 +123,7 @@ header .header .menu .nav ul li a:not(a.app-login):after{
     transform-origin: center top;
 }
 
-header .header .menu .nav ul li a:not(a.app-login):hover::after{
+header .header .menu .nav ul li a:not(a.app-login,a.logined):hover::after{
     transform: scale(1,1);
 }
 
@@ -138,9 +138,21 @@ header .header .menu .nav ul li a.app-login{
     box-shadow: 2px 4px 6px #000000;
 }
 
+header .header .menu .nav ul li a.logined{
+    padding: 20px 30px;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 20vw;
+    background-color: #ff9500;
+}
+
 header .header .menu .nav ul li a.app-login:hover{
     box-shadow: 1px 2px 3px #000000;
     border-bottom: 2px solid #000000;
+}
+
+header .header .menu .nav ul li a.logined{
+    font-weight: 800;
 }
 
 /*以下ハンバーガー*/
@@ -177,6 +189,15 @@ header .header > .hamburgur-menu label span{
     transition-property: all;
 }
 
+/*ハンバーガークリック時の挙動用css*/
+body.hamburgured >*:not(header){
+    opacity: 0.15;
+}
+body.hamburgured header{
+    z-index: 9999; 
+}
+
+
 
 /*ハンバーガーアニメーション*/
 header .header > .hamburgur-menu input#toggle:checked+
@@ -209,11 +230,11 @@ header .header > .hamburgur-menu .nav{
     background-color: #ffffff;
     z-index: 999;
     transition-duration: 1s;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 header .header > .hamburgur-menu input#toggle:checked~.nav{
-    width: 15em;
+    width: 50vw;
 }
 
 header .header .hamburgur-menu .nav > ul{
@@ -222,6 +243,7 @@ header .header .hamburgur-menu .nav > ul{
     white-space: nowrap;
     padding: 0;
     margin: 0;
+    overflow-x: hidden;
 }
 
 header .header .hamburgur-menu .nav > ul li a{
@@ -395,6 +417,7 @@ article{
     display: flex;
     justify-content: center;
     min-width: 300px;
+    height: 100%;
 }
 
 /*ここからサイドバー*/
@@ -477,8 +500,8 @@ footer{
     display: flex;
     flex-flow: column;
     min-width: 300px;
-    position: sticky;
-    top: 100vh;
+    width: 100%;
+    top:100vh;
 }
 footer div.footernav{
     color: #ffffff;

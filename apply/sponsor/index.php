@@ -1,70 +1,90 @@
 <?php
-
-use function PHPSTORM_META\type;
-
-    session_start();
-
-    ini_set("display_errors",1);
+    $nametag = "comname";
     
+    $imgstyle='';
     $params = [
-        'メールアドレス' => [['type'=>'email']=>['email',"varchar(255) NOT NULL UNIQUE KEY"]],
-        '会社名'=>[['type'=>'text']=>['comname','varchar(255) NOT NULL']],
-        '電話番号'=>[['type'=>'tel']=>['tel','char(11) NOT NULL UNIQUE KEY']],
-        '郵便番号'=>[['type'=>'text']=>['zip','char(7) NOT NULL']],
-        '住所'=>[['text']=>['adress','varchar(255) NOT NULL']],
-        '番地・建物名'=>[['text']=>['adressnum','varchar(255) NOT NULL']],
-        '金額'=>[['number']=>['cash','INT(6) NOT NULL']],
-        '受け渡し方法'=>[['text']=>['transway','varchar(10)']],
-        '受け渡し日時'=>[['datetime-local']=>['transferdate','DATETIME']],
-        '広告ファイル'=>[['file']=>['adfile','text']],
-        '会社ホームページURL'=>[['url']=>['comurl','text']]]; 
+        'メールアドレス' =>[
+            'html'=>['input1'=>['input'=>['type'=>'email']]],
+            'col'=>['email'=>"varchar(255) NOT NULL UNIQUE KEY"]],
+            '会社名'=>[
+                'html'=>['input1'=>['input'=>[
+                    'type'=>'text',
+                    'required'=>'required']]],
+                    'col'=>['comname'=>'varchar(255) NOT NULL']],
+            '電話番号'=>[
+                'html'=>['input1'=>['input'=>[
+                    'type'=>'tel',
+                    'placeholder'=>'ハイフン無し',
+                    'required'=>'required']]],
+                'col'=>['tel'=>'char(11) NOT NULL UNIQUE KEY']],
+            '郵便番号'=>[
+                'html'=>['input1'=>['input'=>[
+                    'type'=>'text',
+                    'size'=>'10',
+                    'maxlength'=>'7',
+                    'onKeyUp'=>"AjaxZip3.zip2addr(this,'','adress','adress');",
+                    'placeholder'=>'ハイフン無し',
+                    'required'=>'required']]],
+                'col'=>['zip'=>'char(7) NOT NULL']],
+            '住所'=>[
+                'html'=>['input1'=>['input'=>[
+                    'type'=>'text',
+                    'size'=>'40',
+                    'placeholder'=>'郵便番号で自動入力されます',
+                    'required'=>'required']]],
+                'col'=>['adress'=>'varchar(255) NOT NULL']],
+            '番地・建物名'=>[
+                'html'=>['input1'=>['input'=>[
+                    'type'=>'text',
+                    'size'=>'40',
+                    'placeholder'=>'○○○-○○○ ××ビル△階',
+                    'required'=>'required']]],
+                'col'=>['adressnum'=>'varchar(255) NOT NULL']],
+            '金額'=>[
+                'html'=>['input1'=>['input'=>[
+                        'type'=>'number',
+                        'required'=>'required']]],
+                'col'=>['cash'=>'INT(6) NOT NULL']],
+            '受け渡し方法'=>[
+                'html'=>[
+                    'input1'=>[
+                        'label'=>'対面',
+                        'input'=>[
+                            'type'=>'radio',
+                            'value'=>'対面',
+                            'required'=>'required']],
+                    'input2'=>[
+                        'label'=>'銀行振込',
+                        'input'=>[
+                            'type'=>'radio',
+                            'value'=>'銀行振込',
+                            'required'=>'required']]],
+                'col'=>['transway'=>'varchar(10)']],
+            '受け渡し日時'=>[
+                'html'=>['input1'=>['input'=>[
+                    'type'=>'datetime-local']]],
+                'col'=>['transferdate'=>'DATETIME']],
+            '広告ファイル<br>※.png,.jpgファイルのみ受け付けます'=>[
+                'html'=>['input1'=>['input'=>[
+                    'type'=>'file',
+                    'class'=>'adfile',
+                    'accept'=>'image/png,image/jpeg']]],
+                'col'=>['adfile'=>'text']],
+            '会社ホームページURL'=>[
+                'html'=>['input1'=>['input'=>[
+                    'type'=>'url',
+                    'class'=>'comurl']]],
+                'col'=>['comurl'=>'text']]
+        ]; 
+    if($_POST['cash']){
+        if($_POST["cash"] >= 5000 && $_POST["cash"] < 10000){$imgstyle = "width:148px;height:100px;";}
+        elseif($_POST["cash"] >= 10000 && $_POST["cash"] < 20000){$imgstyle = "width:296px;height:100px;";}
+        elseif($_POST["cash"] >= 20000 && $_POST["cash"] < 30000){$imgstyle = "width:296px;height:200px;";}
+        else{$imgstyle = "width:296px;height:400px;";}
+    }
     $year = date("Y");
     $kind = "sponsor";
-    
-    $tablename = "{$year}{$kind}";
-    
-    $dbname = "chofusai";
-    $user = "chofusai";
-    $password = "M207chofu";
-    $dsn = "mysql:host=localhost;dbname=$dbname;charset=utf8;";
-
-    require_once "operateDB.php";
-    
-    $page_flag = 0;
-    if(!empty($_POST["btn_confirm"])){
-        $page_flag = 1;
-        unset($_POST["btn_confirm"]);  //unset value of submit-button
-    }elseif(!empty($_POST["btn_submit"])){
-        $page_flag = 2;
-        //データベース操作オブジェクトの宣言
-        $colparams = require "./sp_mkquery.php";
-        $opdb = new opDB\OperateDB\OperateDB($dsn,$user,$password,$tablename,$colparams);
-        $opdb -> mktable(); //テーブル作成
+    $tablename = $year.$kind;
+    require_once "../opDB/registDB.php";
         
-        $sponsor = unserialize($_SESSION["Data"]);
-        unset($_SESSION["Data"]);
-        $result = $opdb -> registDB($sponsor);
-    }
-?>
-
-    <?php require_once "header.php";?>
-    <!--insert title-->
-    <script>
-        var title = document.createElement('title');
-        title.innerHTML = '協賛申請フォーム';
-        var head = document.getElementsByTagName('head')[0];
-        head.appendChild(title);
-    </script>
-    <article>
-        <?php require_once 'sidebar.php';?>
-        <main class="contents">
-            <div class="sponsorform inputform">
-                <h1>協賛申請フォーム</h1>
-                <form method="POST" enctype="multipart/form-data">
-                <?php
-                    foreach($params as $title => $mold){
-                        foreach($mold as $type => $col){
-                            $html = '<p>'.$title.'：'.'<input type='.$type.' name='.$col[0].' placeholder='..'></p>';
-
-                        }
-                    }
+       

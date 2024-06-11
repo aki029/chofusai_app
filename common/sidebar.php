@@ -8,9 +8,13 @@
                     $place_name = ["app"=>"HOME",
                     "apply"=>"各種申請",
                     "user"=>"ユーザー",
+                    'login'=>'ログイン',
                     "info"=>"ご案内",
-                    "club"=>"模擬店・イベント申請",
-                    "sponsor"=>"協賛のお申込み"];
+                    "event"=>"イベント",
+                    "mypage"=>"マイページ",
+                    "market"=>"模擬店",
+                    "sponsor"=>"協賛",
+                    "contact"=>"お問い合わせ"];
                     $docroot = $_SERVER["DOCUMENT_ROOT"];
                     $dirs = str_replace($docroot,"",dirname($_SERVER["PHP_SELF"]));
                     $visited = explode("/",$dirs);

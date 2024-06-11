@@ -60,8 +60,8 @@
                         <p>番地・建物名：<input type="text" size="40" name="adressnum" placeholder="○○○-○○○ ××ビル△階" required value=''></p>
                         <p>金額：<input type="number" name="cash" required></p>
                         <p>受け渡し方法：
-                            <label><input type="radio" name="transway" value="対面" required value=''>対面</label>
-                            <label><input type="radio" name="transway" value="銀行振込" required value=''>銀行振込</label>
+                            <label><input type="radio" name="transway" value="対面" required >対面</label>
+                            <label><input type="radio" name="transway" value="銀行振込" required >銀行振込</label>
                         </p>
                         <p>受け渡し日時：<input type="datetime-local" name="transferdate" value=''></p>
                         <p>広告ファイル：<input type="file" name="adfile" class="adfile" value=''></p>
