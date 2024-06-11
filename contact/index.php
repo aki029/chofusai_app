@@ -19,15 +19,17 @@
             <h1>お問い合わせフォーム</h1>
             <form method="POST" enctype="multipart/form-data">
                 <?php if($page_flag == 0):?>
-                    <p>メールアドレス：<input type="email" name="name"></p>
+                    <p>お名前：<input type="text" name="name"></p>
+                    <p>メールアドレス：<input type="email" name="email"></p>
                     <p>件名：<input type="text" name="title"/></p>
                     <p>お問い合わせ内容：</p>
                     <textarea name="contents" style="width:25vw;height:40vh"></textarea>
                 <p><input name="btn_confirm" type="submit" value="確認"></p>
                 <?php elseif($page_flag == 1):?>
-                    <p>件名：<?=$_POST["title"]?></p>
+                    <p>メールアドレス：<?=htmlspecialchars($_POST['email'])?></p>
+                    <p>件名：<?=htmlspecialchars($_POST["title"])?></p>
                     <p>お問い合わせ内容：</p>
-                    <p><?=$_POST["contents"]?></p>
+                    <p><?=htmlspecialchars($_POST["contents"])?></p>
                     <input type="submit" value="戻る">
                     <input type="submit" value="送信" name="btn_submit">
                 <?php elseif($page_flag == 2):?>
