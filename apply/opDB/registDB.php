@@ -87,7 +87,7 @@
             $result = $opdb -> registDB($user);
 
             //メール送信
-            $sendmail = "java -classpath ../../items/javax.mail.jar:../../items/javax.activation.jar:../../items/ MailSender ".$user -> textdata["email"]." ".$kindarray[$kind]." ".$userbasic -> id." ".$userpass;
+            $sendmail = "java -classpath ../items/javax.mail.jar:../items/javax.activation.jar:../items/ MailSender ".$user -> textdata["email"]." ".$kindarray[$kind]." ".$userbasic -> id." ".$userpass;
             shell_exec("export LANG=C.UTF-8;".$sendmail);
         }
     }

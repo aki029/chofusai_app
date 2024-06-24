@@ -30,6 +30,11 @@ div.RegistedContents{
     margin: 0 10px;
 }
 
+div.RegistedContents > p{
+    font-size: max(1vw,11px);
+    text-align: center;
+}
+
 div.RegistedContents > div.tab_wrap {
     margin: 20px 0;
     margin-bottom: 0;

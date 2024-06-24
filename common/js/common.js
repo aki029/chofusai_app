@@ -1,5 +1,6 @@
 window.onload = function(){
     $("input#toggle").prop('checked',false);
+	console.log($("input#toggle"));
     $("input#toggle").on("click",function(){
         $("body").toggleClass('hamburgured');
         document.addEventListener('touchmove',hamburgured,{passive:false});
@@ -20,3 +21,7 @@ window.onload = function(){
 function hamburgured(e){
     e.preventDefault();
 }
+
+window.addEventListener("pageshow",function(e){
+	$("input#toggle").prop("checked",false);
+})

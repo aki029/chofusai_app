@@ -69,6 +69,7 @@
                 </div>
             </div>
             <div class="RegistedContents">
+                <p>登録データ</p>
                 <div class="tab_wrap">
                     <input id="sponsor" type='radio' name="check" checked>
                     <label for="sponsor" class="tab_sp tabs">協賛</label>

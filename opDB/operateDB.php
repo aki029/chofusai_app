@@ -115,9 +115,9 @@ class pdoparams{
     public function registDB(\opDB\OperateUserData\Userdata $user) {
         $columns = null;
         $params = null;
-        $keys = array_keys($this -> colparams);
         if($user -> tmppath)$user -> SaveImage();
         $user -> Molddata();
+        $keys = array_keys($user -> textdata);
         if($this -> Detect_Avoid($user)){
             foreach($keys as $key){
                 $params .= ":{$key}";
@@ -199,7 +199,7 @@ namespace opDB\OperateUserData;
             }
             $filearray = array_keys($file);
             foreach($filearray as $key){
-                $filename = $file[$key]["name"];
+                $filename = str_replace(" ","",$file[$key]["name"]);
                 $result = move_uploaded_file($file[$key]["tmp_name"], $tmp_dir . $filename);
                 if($result){
                     $this -> tmppath[$key] = $tmp_dir . $filename;
