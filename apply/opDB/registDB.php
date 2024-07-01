@@ -87,6 +87,11 @@
             $result = $opdb -> registDB($user);
 
             //メール送信
+            require "items/mail.php";
+            $contents = file_get_contents("../items/contents.txt",false);
+            $contents = str_replace("&userid",$user -> id,$contents);
+            $contents = str_replace("&password",$userpass,$contents);
+            sendmail($user->textdata["email"],$user->textdata["comname"],"申請受理のお知らせ",$contents);
             $sendmail = "java -classpath ../items/javax.mail.jar:../items/javax.activation.jar:../items/ MailSender ".$user -> textdata["email"]." ".$kindarray[$kind]." ".$userbasic -> id." ".$userpass;
             shell_exec("export LANG=C.UTF-8;".$sendmail);
         }
